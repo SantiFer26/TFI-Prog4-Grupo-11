@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
+    </header>
+    <div class="main-container">
+        <nav>
+            <ul>
+                
+                <li>
+                    <a href="director-sistemas-dashboard.html">Dashboard</a>
+                </li>
+                <li>
+                    <a href="director-sistemas-incidencias.html">Incidencias</a>
+                </li>
+                <li>
+                    <a href="../../../index.html" class="active" aria-current="page" href="#">Salir</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="right-container">
+            <main>
+                <div class="container text-center">                    
+                    <div class="row">
+                        <div class="col-auto me-auto">
+                            <h3>Incidencias</h3>
+                        </div>
+                    </div>
+                
+                
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Creada el</th>
+                            <th scope="col">Prioridad</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">91</th>
+                                <td>10/07/2026</td>
+                                <td>Alta</td>
+                                <td>Finalizada</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" title="Asignar" disabled>
+                                        Asignar a
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">101</th>
+                                <td>20/07/2026</td>
+                                <td>Media</td>
+                                <td>Cancelada</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" title="Asignar" disabled>
+                                        Asignar a
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">141</th>
+                                <td>10/08/2026</td>
+                                <td>Media</td>
+                                <td>Pendiente</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" title="Asignar" >
+                                        Asignar a
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">198</th>
+                                <td>25/07/2026</td>
+                                <td>Alta</td>
+                                <td>En proceso</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" title="Asignar" >
+                                        Asignar a
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>  
+            </main>
+            <!-- <footer>
+            </footer> -->
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
