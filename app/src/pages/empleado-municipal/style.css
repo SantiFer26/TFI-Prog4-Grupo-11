@@ -1,0 +1,84 @@
+header{
+    display: flex;
+    justify-content: center;
+    padding: 1rem 1rem;
+
+    background-color: rgb(30,30,30);
+}
+
+@media screen and (min-width: 480px) {
+    header{
+        justify-content: flex-end;
+    }
+}
+
+header img.logo {
+    height: 60px;
+}
+
+nav{
+    width: 250px; 
+    flex-shrink: 0;
+
+    height: 100vh;
+    background-color: #CCC;
+}
+
+nav ul{
+    padding: 0;
+}
+
+nav ul li{
+    display: block;
+}
+
+nav ul li a, nav ul li a:link, nav ul li a:visited, nav ul li a:active, nav ul li a:hover{
+    display: block;
+    padding: 0.5rem 2rem;
+
+    text-decoration: none;
+}
+
+nav ul li a, nav ul li a:link, nav ul li a:visited, nav ul li a:active{
+    color: white;
+}
+
+nav ul li a:hover{
+    display: block;
+    padding: 0.5rem 2rem;
+
+    color: white;
+    background-color: #8cc856;
+
+    text-decoration: none;
+}
+
+div.container{
+    background: linear-gradient(0deg, white, green);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+div.container-form{
+    max-height: 700px;
+    width: 100%;
+    padding: 25px 30px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+div.container.titulo{
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.container form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px 12px 0;
+    align-items: center;
+}
