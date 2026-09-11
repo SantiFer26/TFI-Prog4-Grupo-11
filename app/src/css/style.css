@@ -83,3 +83,10 @@ footer{
     height: 100px;
     background-color: green;
 }
+
+tbody.table-group-divider tr:hover th, 
+tbody.table-group-divider tr:hover td {
+    cursor: pointer;
+    background-color: #8cc856;
+    color: white;
+}
