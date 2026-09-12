@@ -1,7 +1,6 @@
 header{
     display: flex;
     justify-content: center;
-
     padding: 1rem 1rem;
 
     background-color: rgb(30,30,30);
@@ -11,25 +10,28 @@ header{
     header{
         justify-content: flex-end;
     }
+    .main-container{
+        max-width: 100%;
+    }
+    .form .group-form{
+        margin: 12px;
+        width: 100%; 
+    }
+    .main-container form{
+        max-height: 400px;
+        overflow-y: scroll;
+    }
 }
 
 header img.logo {
     height: 60px;
 }
 
-div.main-container{
-    display: flex;
-    justify-content: flex-start;
-    align-items: stretch; 
-    min-height: calc(100vh - 92px); 
-}
-
 nav{
     width: 250px; 
     flex-shrink: 0;
 
-    height: 100vh;
-    background-color: #CCC;
+    height: 35vh;
 }
 
 nav ul{
@@ -44,13 +46,11 @@ nav ul li a, nav ul li a:link, nav ul li a:visited, nav ul li a:active, nav ul l
     display: block;
     padding: 0.5rem 2rem;
 
-    background-color: #CCC;
-
     text-decoration: none;
 }
 
 nav ul li a, nav ul li a:link, nav ul li a:visited, nav ul li a:active{
-    color: black;
+    color: white;
 }
 
 nav ul li a:hover{
@@ -63,19 +63,72 @@ nav ul li a:hover{
     text-decoration: none;
 }
 
+main{
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+div.main-container{
+    background: linear-gradient(0deg, white, green);
+    justify-content: flex-start;
+    align-items: stretch; 
+    min-height: calc(100vh - 92px);
+}
+
+div.container-form{
+    max-height: 700px;
+    width: 80%;
+    padding: 25px 30px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.main-container .titulo{
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.main-container form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px 12px 0;
+    align-items: center;
+}
+
+.group-form select{
+    width: 90%;
+    height: 30px;
+}
+
+.group-form input{
+    width: 200px;
+    height: 20px;
+}
+
+form .group-form{
+    margin-bottom: 12px;
+    width: calc(100%/2 - 20px);
+}
+
+form .button{
+    width: 100%;
+    height: 40px;
+    margin: 40px 0;
+}
+
+form .button input{
+    width: 100%;
+    height: 100%;
+}
+
 div.right-container{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     flex-grow: 1; 
-}
-
-main{    
-
-    flex-grow: 1; 
-    background-color: #EEE;
-    padding: 2rem;
-    
 }
 
 footer{
