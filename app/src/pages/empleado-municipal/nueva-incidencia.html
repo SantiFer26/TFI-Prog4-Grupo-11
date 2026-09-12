@@ -15,7 +15,7 @@
       <nav>
         <ul>
           <li>
-            <a href="./empleado-municipal-incidencias.html" class="active" aria-current="page" href="#">Atras</a>
+            <a id="btn-volver" class="active">Atrás</a>
           </li>
         </ul>
       </nav>
@@ -53,5 +53,17 @@
         </main>
       </div>
     </div>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const from = params.get("from");
+
+      const btnVolver = document.getElementById("btn-volver");
+
+      if (from === "articulos") {
+      btnVolver.href = "./empleado-municipal-articulos.html";
+      } else {
+      btnVolver.href = "./empleado-municipal-incidencias.html";
+      }
+    </script>
 </body>
 </html>
