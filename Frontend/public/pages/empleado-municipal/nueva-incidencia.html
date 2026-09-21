@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../css/style.css">
-  <title>Nueva incidencia</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/style.css">
+    <title>Nueva incidencia</title>
 </head>
 <body>
     <header>
-        <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
+        <img class="logo" src="./assets/logo-muni.png" alt="Logo Muni">
     </header>
     <div class="main-container">
       <nav>
@@ -60,10 +60,12 @@
       const btnVolver = document.getElementById("btn-volver");
 
       if (from === "articulos") {
-      btnVolver.href = "./empleado-municipal-articulos.html";
+      btnVolver.href = "/pages/empleado-municipal-articulos.html";
       } else {
-      btnVolver.href = "./empleado-municipal-incidencias.html";
+      btnVolver.href = "/empleado-municipal-incidencias.html";
       }
     </script>
+    <script type="module" src="/src/main.js"></script>
+
 </body>
 </html>
