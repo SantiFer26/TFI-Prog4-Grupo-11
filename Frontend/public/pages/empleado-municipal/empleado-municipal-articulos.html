@@ -8,7 +8,8 @@
     <title>Inicio</title>
 </head>
 
-<body>
+<body class="table-group-divider">
+  
     <header>
         <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
     </header>
@@ -63,36 +64,91 @@
                             <th scope="col">Código</th>
                             <th scope="col">Categoria</th>
                             <th scope="col">Descripción</th>
+                            <th scope="col">Accion</th>
+
                             </tr>
                         </thead>
-                        <tbody class="table-group-divider">
-                            <tr>
+                        <tbody class="table-group-divider"></tbody>
+                    </table>
+                            <!--<tr>
                                 <th scope="row">1000</th>
                                 <td>Periféricos</td>
                                 <td>Teclado</td>
+                                <td>
+                                    <a href="./nueva-incidencia.html?from=articulos&articulo=1000" class="btn btn-success btn-sm">
+                                    Crear incidencia
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">1002</th>
                                 <td>Periféricos</td>
                                 <td>Mouse</td>
+                                <td>
+                                    <a href="./nueva-incidencia.html?from=articulos&articulo=1000" class="btn btn-success btn-sm">
+                                    Crear incidencia
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">1033</th>
                                 <td>Almacenamiento</td>
                                 <td>Disco Rígido</td>
+                                <td>
+                                    <a href="./nueva-incidencia.html?from=articulos&articulo=1000" class="btn btn-success btn-sm">
+                                    Crear incidencia
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
-                    </table>
-                </div>    
+                     </table>
+                            </div>    
+                        </main> 
+                        <footer>
+                            <p class="footer">© Municipalidad de Concordia 2026 - Sistema de Gestión de Incidencias</p>
+                            <p class="footer">v1.0</p>
+                        </footer> -->
+                    
+                </div>
             </main>
-            <!--<footer>
-                <p class="footer">© Municipalidad de Concordia 2026 - Sistema de Gestión de Incidencias</p>
-                <p class="footer">v1.0</p>
-            </footer> -->
         </div>
     </div>
 
     <script type="module" src="/src/main.js"></script>
+    <script>
+        async function cargarArticulos() {
+            try {
+                const response = await fetch("http://localhost:3000/articulos");
+                const articulos = await response.json();
+
+                const tbody = document.querySelector("tbody");
+                tbody.innerHTML = ""; // limpiar tabla
+
+                articulos.forEach(art => {
+                    const fila = document.createElement("tr");
+
+                    fila.innerHTML = `
+                        <th scope="row">${art.id_articulo}</th>
+                        <td>${art.id_categoria}</td>
+                        <td>${art.descripcion}</td>
+                        <td>
+                            <a href="./nueva-incidencia.html?from=articulos&articulo=${art.id_articulo}" 
+                            class="btn btn-success btn-sm">
+                            Crear incidencia
+                            </a>
+                        </td>
+                    `;
+
+                    tbody.appendChild(fila);
+                });
+            } catch (error) {
+                console.error("Error cargando artículos:", error);
+            }
+        }
+
+        cargarArticulos();
+    </script>
+
 </body>
 
 </html>
