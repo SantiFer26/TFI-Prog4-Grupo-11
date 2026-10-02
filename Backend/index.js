@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import incidenciasRoutes from './routes/incidencias.js';
 import articulosRoutes from './routes/articulos.js';
+import categoriasRoutes from './routes/categorias.js';
 
 const app = express();
 
@@ -15,7 +16,8 @@ app.get("/", (req, res) => {
 });
 app.use('/incidencias', incidenciasRoutes);
 app.use('/articulos', articulosRoutes);
-i
+app.use('/categorias', categoriasRoutes)
+
 // Levantar servidor
 app.listen(3000, () => {
   console.log("Servidor iniciado en http://localhost:3000");
