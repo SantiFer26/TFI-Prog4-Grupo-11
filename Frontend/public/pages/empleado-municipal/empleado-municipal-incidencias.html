@@ -35,7 +35,7 @@
                             <h3>Mis Incidencias</h3>
                         </div>
                         <div class="col-auto">
-                            <a href="./nueva-incidencia.html"><button type="button" class="btn btn-primary mt-auto w-auto">Nueva</button></a>
+                            <a href="./nueva-incidencia.html?from=incidencias"><button type="button" class="btn btn-primary mt-auto w-auto">Nueva</button></a>
                         </div>
                     </div>
                 
@@ -51,43 +51,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1000</th>
-                                <td>14/07/2026</td>
-                                <td>Alta</td>
-                                <td>Finalizada</td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" title="Eliminar" disabled>
-                                        Cancelar
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1002</th>
-                                <td>25/08/2026</td>
-                                <td>Media</td>
-                                <td>Pendiente</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-danger btn-sm" title="Cancelar">
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1033</th>
-                                <td>26/08/2026</td>
-                                <td>Baja</td>
-                                <td>Pendiente</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-danger btn-sm" title="Cancelar">
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>    
@@ -98,6 +62,48 @@
     </div>
 
     <script type="module" src="/src/main.js"></script>
+   <script>
+    async function cargarIncidencias() {
+    try {
+        const response = await fetch("http://localhost:3000/api/incidencias");
+        const incidencias = await response.json();
+
+        const tbody = document.querySelector("tbody");
+        tbody.innerHTML = "";
+
+        incidencias.forEach(inc => {
+
+            // Traducir estado
+            let estadoTexto = "";
+            switch (inc.id_estado) {
+                case 1: estadoTexto = "Pendiente"; break;
+                case 2: estadoTexto = "En proceso"; break;
+                case 3: estadoTexto = "Finalizada"; break;
+                default: estadoTexto = "Desconocido";
+            }
+
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${inc.id_incidencia}</td>
+                <td>${new Date(inc.creado).toLocaleDateString()}</td>
+                <td>${inc.prioridad}</td>
+                <td>${estadoTexto}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm">Cancelar</button>
+                </td>
+            `;
+            tbody.appendChild(fila);
+        });
+
+    } catch (error) {
+        console.error("Error cargando incidencias:", error);
+    }
+}
+
+cargarIncidencias();
+</script>
+
+
 </body>
 
 </html>
