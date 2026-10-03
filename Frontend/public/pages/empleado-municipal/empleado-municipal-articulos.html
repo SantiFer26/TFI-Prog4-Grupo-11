@@ -118,7 +118,7 @@
     <script>
         async function cargarArticulos() {
             try {
-                const response = await fetch("http://localhost:3000/articulos");
+                const response = await fetch("http://localhost:3000/api/articulos");
                 const articulos = await response.json();
 
                 const tbody = document.querySelector("tbody");
