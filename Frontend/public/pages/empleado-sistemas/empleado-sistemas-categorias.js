@@ -1,134 +1,148 @@
 const Modal = window.bootstrap.Modal;
 const Toast = window.bootstrap.Toast;
 
-//-- FUNCIONALIDAD DE CARGAR LAS CATEGORIAS --
+const tabla = document.getElementById("tabla_categorias");
+
+// Variables globales
+let categoriaSeleccionada = null;
+let idCatEditar = 0;
+
+// ===============================
+// CARGAR CATEGORÍAS
+// ===============================
 async function cargarCategorias() {
     try {
-        const respuesta = await fetch("http://localhost:3000/categorias");
-        const categorias = await respuesta.json();
+        const response = await fetch("http://localhost:3000/api/categorias");
+        const categorias = await response.json();
 
-        const tbody = document.getElementById("tabla_categorias");
-        tbody.innerHTML = ""; // limpiar tabla en el caso de recargar las categorias ante borrados o actualizaciones
+        tabla.innerHTML = "";
+
         categorias.forEach(cat => {
-            const filaActual = document.createElement("tr");
+            const fila = document.createElement("tr");
 
-            const idCat = document.createElement("th");
-            idCat.textContent = cat.id_categoria;
+            fila.innerHTML = `
+                <th scope="row">${cat.id_categoria}</th>
+                <td>${cat.descripcion}</td>
+                <td>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-warning btn-sm" 
+                                title="Editar"
+                                data-id="${cat.id_categoria}"
+                                data-descripcion="${cat.descripcion}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditarCategoria">
+                            Editar
+                        </button>
 
-            const desc = document.createElement("td");
-            desc.textContent = cat.descripcion;
+                        <button class="btn btn-danger btn-sm" 
+                                title="Eliminar"
+                                data-id="${cat.id_categoria}"
+                                data-descripcion="${cat.descripcion}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalCategorias">
+                            Eliminar
+                        </button>
+                    </div>
+                </td>
+            `;
 
-            const acciones = document.createElement("td");
+            tabla.appendChild(fila);
+        });
 
-            const boton1 = document.createElement("button");
-            boton1.classList.add("btn", "btn-warning", "btn-sm", "me-2");
-            boton1.textContent = "Editar";
-            boton1.setAttribute("data-id", `${cat.id_categoria}`);
-            boton1.setAttribute("data-descripcion", `${cat.descripcion}`);
-
-            const boton2 = document.createElement("button");
-            boton2.classList.add("btn", "btn-danger", "btn-sm", "me-2");
-            boton2.textContent = "Eliminar";
-            boton2.setAttribute("data-id", `${cat.id_categoria}`);
-            boton2.setAttribute("data-descripcion", `${cat.descripcion}`);
-            boton2.setAttribute("data-bs-toggle", "modal");
-            boton2.setAttribute("data-bs-target", "#modalCategorias");
-
-            filaActual.appendChild(idCat);
-            filaActual.appendChild(desc);
-            filaActual.appendChild(acciones);
-
-            acciones.appendChild(boton1);
-            acciones.appendChild(boton2);
-
-            tbody.appendChild(filaActual);
-        })
-
+    } catch (error) {
+        console.error("Error cargando categorías:", error);
     }
-    catch(error) {
-        console.error("Error al cargar las categorías.", error);
-    }
-
 }
 
 cargarCategorias();
 
-// -- FUNCIONALIDAD DE ELIMINAR CATEGORIA --
-const modal = document.getElementById("modalCategorias");
+// ===============================
+// ELIMINAR CATEGORÍA
+// ===============================
+const modalEliminar = document.getElementById("modalCategorias");
+const miModalEliminar = Modal.getOrCreateInstance(modalEliminar);
 const toast = document.getElementById("miToast");
-let idCat = 0; 
-let confirmado = false; //Para identificar que el usuario apretó "Eliminar" dentro del modal
-
-//Creación de Listeners de ventana modal y boton "Eliminar"
-modal.addEventListener("show.bs.modal", event => {
-    const boton = event.relatedTarget;
-    if (boton.textContent.trim() === "Eliminar") {
-        idCat = boton.getAttribute("data-id");
-        const textoModal = document.getElementById("textoModal");
-        textoModal.textContent = `¿Está seguro que desea eliminar la categoría "${boton.getAttribute("data-descripcion")}" de la lista?`;
-    }
-})
-
-modal.addEventListener("hidden.bs.modal", async function() {
-    if (confirmado === true) {
-        confirmado = false;
-        await eliminarCategoria(idCat, miToast, toast);
-    }
-})
-const miModal = Modal.getOrCreateInstance(modal); // Se obtiene o se crea el objeto Bootstrap asociado al elemento.
 const miToast = Toast.getOrCreateInstance(toast);
-const btnEliminar = document.getElementById("botonEliminar");
-btnEliminar.addEventListener("click", function() {
-    confirmado = true;
-    miModal.hide();
-})
 
-//Funcion para mostrar el toast (alerta moderna) después de eliminar una categoria
-function mostrarToast(toast, miToast, bandera) {
-    toast.classList.remove("text-bg-success", "text-bg-danger");
-    if (bandera === true) {
-        toast.classList.add("text-bg-success");
-    }
-    else {
-        toast.classList.add("text-bg-danger");
-    }
-    miToast.show();
-}
+modalEliminar.addEventListener("show.bs.modal", event => {
+    const boton = event.relatedTarget;
 
-//Función para eliminar una categoria
-async function eliminarCategoria(idCat, miToast, toast) {
-    const textoToast = document.getElementById("textoToast");
-    let bandera = false; //Para identificar si se pudo eliminar la categoria, y personalizar el color del toast
+    categoriaSeleccionada = boton.getAttribute("data-id");
+    const descripcion = boton.getAttribute("data-descripcion");
+
+    document.getElementById("textoModal").innerText =
+        `¿Seguro que deseas eliminar la categoría "${descripcion}"?`;
+});
+
+document.getElementById("botonEliminar").addEventListener("click", async () => {
     try {
-        const respuesta = await fetch(`http://localhost:3000/categorias`, {method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({id_categoria: `${idCat}`})}); //Investigar diseño de API REST para cambiar patch por delete
-        switch (respuesta.status) {
-            case 200:
-                await cargarCategorias();
-                textoToast.textContent = "Categoría eliminada con éxito.";
-                bandera = true;
-                mostrarToast(toast, miToast, bandera);
-                break;
+        const response = await fetch("http://localhost:3000/api/categorias", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_categoria: categoriaSeleccionada })
+        });
 
-            case 404:
-                textoToast.textContent = "Error. La categoría seleccionada ya no existe."
-                mostrarToast(toast, miToast, bandera);
-                break;
-            
-            case 500:
-                textoToast.textContent = "Error del servidor. No se pudo eliminar la categoría."
-                mostrarToast(toast, miToast, bandera);
-                break;
+        miModalEliminar.hide();
 
-            default:
-                textoToast.textContent = "Error al eliminar la categoría. Intente nuevamente."
-                mostrarToast(toast, miToast, bandera);
-                break;
+        if (response.ok) {
+            mostrarToast("Categoría eliminada con éxito");
+            cargarCategorias();
+        } else {
+            mostrarToast("Error al eliminar categoría");
         }
-    }
 
-    catch (error) {
-        console.error("No se pudo borrar la categoría.", error);
-        textoToast.textContent = "Error. Hubo un problema al eliminar la categoría.";
-        mostrarToast(toast, miToast, bandera);
+    } catch (error) {
+        console.error(error);
+        mostrarToast("Error al eliminar categoría");
     }
+});
+
+// ===============================
+// EDITAR CATEGORÍA
+// ===============================
+const modalEditar = document.getElementById("modalEditarCategoria");
+const miModalEditar = Modal.getOrCreateInstance(modalEditar);
+
+modalEditar.addEventListener("show.bs.modal", event => {
+    const boton = event.relatedTarget;
+
+    idCatEditar = boton.getAttribute("data-id");
+    const descripcionActual = boton.getAttribute("data-descripcion");
+
+    document.getElementById("inputEditarCategoria").value = descripcionActual;
+});
+
+document.getElementById("botonGuardarCambios").addEventListener("click", async () => {
+    const nuevaDescripcion = document.getElementById("inputEditarCategoria").value.trim();
+
+    try {
+        const respuesta = await fetch("http://localhost:3000/api/categorias", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                id_categoria: idCatEditar,
+                descripcion: nuevaDescripcion
+            })
+        });
+
+        if (respuesta.ok) {
+            mostrarToast("Categoría actualizada con éxito");
+            miModalEditar.hide();
+            cargarCategorias();
+        } else {
+            mostrarToast("Error al actualizar categoría");
+        }
+
+    } catch (error) {
+        console.error("Error al actualizar categoría:", error);
+        mostrarToast("Error inesperado al actualizar");
+    }
+});
+
+// ===============================
+// TOAST
+// ===============================
+function mostrarToast(texto) {
+    document.getElementById("textoToast").innerText = texto;
+    miToast.show();
 }
