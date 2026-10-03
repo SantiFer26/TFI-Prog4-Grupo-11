@@ -42,8 +42,8 @@
                         </div>
                         <div class="col-4">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar artículo">
-                                <button type="button" class="btn btn-primary mt-auto w-auto">Buscar</button>
+                                <input type="text" id="input-id" class="form-control" placeholder="Buscar artículo">
+                                <button type="button" id="btn-busqueda" class="btn btn-primary mt-auto w-auto">Buscar</button>
                             </div>
                         </div>
                         <div class="col-auto">
@@ -114,38 +114,13 @@
         </div>
     </div>
 
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="./empleado-municipal-articulos.js"></script>
     <script>
-        async function cargarArticulos() {
-            try {
-                const response = await fetch("http://localhost:3000/api/articulos");
-                const articulos = await response.json();
-
-                const tbody = document.querySelector("tbody");
-                tbody.innerHTML = ""; // limpiar tabla
-
-                articulos.forEach(art => {
-                    const fila = document.createElement("tr");
-
-                    fila.innerHTML = `
-                        <th scope="row">${art.id_articulo}</th>
-                        <td>${art.id_categoria}</td>
-                        <td>${art.descripcion}</td>
-                        <td>
-                            <a href="./nueva-incidencia.html?from=articulos&articulo=${art.id_articulo}" 
-                            class="btn btn-success btn-sm">
-                            Crear incidencia
-                            </a>
-                        </td>
-                    `;
-
-                    tbody.appendChild(fila);
-                });
-            } catch (error) {
-                console.error("Error cargando artículos:", error);
-            }
-        }
-
+        const inputId = document.getElementById("input-id");
+        const btnBusqueda = document.getElementById("btn-busqueda");
+        btnBusqueda.addEventListener("click", () => {
+          const idBuscado = inputId.value;
+          buscarArticulo(idBuscado);});
         cargarArticulos();
     </script>
 
