@@ -19,8 +19,8 @@ const getById = async (id_articulo) => {
       id_categoria,
       descripcion
     FROM articulos
-    WHERE id = $1
-  `, [id]);
+    WHERE id_articulo = $1
+  `, [id_articulo]);
   return result.rows[0];
 };
 
