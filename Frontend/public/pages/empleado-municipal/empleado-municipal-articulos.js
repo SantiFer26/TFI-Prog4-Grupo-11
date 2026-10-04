@@ -45,7 +45,7 @@ async function buscarArticulo(idBuscado) {
         const response = await fetch(`http://localhost:3000/api/articulos/${idBuscado}`);
                 
         const art = await response.json();
-        console.log("Respuesta del servidor:", art);
+        
         const tbody = document.querySelector("tbody");
         tbody.innerHTML = ""; // limpiar tabla
 
