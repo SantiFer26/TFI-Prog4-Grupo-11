@@ -37,14 +37,15 @@ async function cargarArticulos() {
         console.error("Error cargando artículos:", error);
     }
 }
-    
+
+cargarArticulos();
         
-async function buscarArticulo() {
+async function buscarArticulo(idBuscado) {
     try {
-        const response = await fetch("http://localhost:3000/api/articulos/${id}");
+        const response = await fetch(`http://localhost:3000/api/articulos/${idBuscado}`);
                 
         const art = await response.json();
-
+        console.log("Respuesta del servidor:", art);
         const tbody = document.querySelector("tbody");
         tbody.innerHTML = ""; // limpiar tabla
 
@@ -67,3 +68,9 @@ async function buscarArticulo() {
         console.error("Error cargando artículos:", error);
     }
 }
+
+const inputId = document.getElementById("input-id");
+const btnBusqueda = document.getElementById("btn-busqueda");
+btnBusqueda.addEventListener("click", () => {
+    const idBuscado = inputId.value;
+    buscarArticulo(idBuscado);});
