@@ -50,36 +50,7 @@
                             <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="tabla_categorias">
-                            <!--<tr>
-                                <th scope="row">1</th>
-                                <td>Periféricos</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-warning btn-sm" title="Editar">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" title="Eliminar">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            <th scope="row">2</th>
-                            <td>Almacenamiento</td>
-                            <td>
-                                <div class="d-flex justify-content-center gap-2">
-                                    <button class="btn btn-warning btn-sm" title="Editar">
-                                        Editar
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" title="Eliminar">
-                                        Eliminar
-                                    </button>
-                                </div>
-                            </td>
-                            </tr> -->
-                        </tbody>
+                        <tbody id="tabla_categorias"></tbody>
                     </table>
                 </div>    
             </main>
@@ -88,9 +59,13 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalCategorias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalEliminarCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar categoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <p id="textoModal"></p>
                 </div>
