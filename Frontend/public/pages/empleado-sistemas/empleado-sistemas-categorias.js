@@ -56,6 +56,55 @@ async function cargarCategorias() {
 
 cargarCategorias();
 
+async function buscarCategoria(idBuscado) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/categorias/${idBuscado}`);
+                
+        const cat = await response.json();
+        
+        tabla.innerHTML = ""; // limpiar tabla
+
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+                <th scope="row">${cat.id_categoria}</th>
+                <td>${cat.descripcion}</td>
+                <td>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-warning btn-sm" 
+                                title="Editar"
+                                data-id="${cat.id_categoria}"
+                                data-descripcion="${cat.descripcion}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditarCategoria">
+                            Editar
+                        </button>
+
+                        <button class="btn btn-danger btn-sm" 
+                                title="Eliminar"
+                                data-id="${cat.id_categoria}"
+                                data-descripcion="${cat.descripcion}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEliminarCategoria">
+                            Eliminar
+                        </button>
+                    </div>
+                </td>
+            `;
+
+        tabla.appendChild(fila);
+        
+    } catch (error) {
+        console.error("Error cargando artículos:", error);
+    }
+}
+
+const inputId = document.getElementById("input-id");
+const btnBusqueda = document.getElementById("btn-busqueda");
+btnBusqueda.addEventListener("click", () => {
+    const idBuscado = inputId.value;
+    buscarCategoria(idBuscado);});
+
 // ===============================
 // ELIMINAR CATEGORÍA
 // ===============================
