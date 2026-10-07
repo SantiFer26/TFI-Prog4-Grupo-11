@@ -10,6 +10,15 @@ const getAll = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const categoria = await categoriasService.getById(req.params.id);
+    res.status(200).json(categoria);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener categoria" });
+  }
+};
+
 const update = async (req, res) => {
   try {
     const { id_categoria, descripcion } = req.body;
@@ -43,4 +52,4 @@ const softDelete = async (req, res) => {
   }
 };
 
-export default { getAll, update, softDelete };
+export default { getAll, getById, update, softDelete };
