@@ -39,7 +39,7 @@ async function cargarCategorias() {
                                 data-id="${cat.id_categoria}"
                                 data-descripcion="${cat.descripcion}"
                                 data-bs-toggle="modal"
-                                data-bs-target="#modalCategorias">
+                                data-bs-target="#modalEliminarCategoria">
                             Eliminar
                         </button>
                     </div>
@@ -59,7 +59,7 @@ cargarCategorias();
 // ===============================
 // ELIMINAR CATEGORÍA
 // ===============================
-const modalEliminar = document.getElementById("modalCategorias");
+const modalEliminar = document.getElementById("modalEliminarCategoria");
 const miModalEliminar = Modal.getOrCreateInstance(modalEliminar);
 const toast = document.getElementById("miToast");
 const miToast = Toast.getOrCreateInstance(toast);
