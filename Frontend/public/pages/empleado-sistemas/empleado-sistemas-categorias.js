@@ -56,6 +56,9 @@ async function cargarCategorias() {
 
 cargarCategorias();
 
+// ===============================
+// BÚSQUEDA DE CATEGORÍA POR ID
+// ===============================
 async function buscarCategoria(idBuscado) {
     try {
         const response = await fetch(`http://localhost:3000/api/categorias/${idBuscado}`);
@@ -95,7 +98,7 @@ async function buscarCategoria(idBuscado) {
         tabla.appendChild(fila);
         
     } catch (error) {
-        console.error("Error cargando artículos:", error);
+        console.error("Error cargando categorias:", error);
     }
 }
 

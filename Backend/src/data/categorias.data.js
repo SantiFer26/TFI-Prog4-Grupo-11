@@ -12,6 +12,17 @@ const getAll = async () => {
   return result.rows;
 };
 
+const getById = async (id_categoria) => {
+  const result = await db.query(`
+    SELECT 
+      id_categoria,
+      descripcion
+    FROM categorias
+    WHERE id_categoria = $1 AND activo = 1;
+  `, [id_categoria]);
+  return result.rows[0];
+};
+
 const softDelete = async (id_categoria) => {
   const result = await db.query(`
     UPDATE categorias
@@ -22,4 +33,4 @@ const softDelete = async (id_categoria) => {
   return result;
 };
 
-export default { getAll, softDelete };
+export default { getAll, getById, softDelete };
