@@ -105,8 +105,25 @@ async function buscarCategoria(idBuscado) {
 const inputId = document.getElementById("input-id");
 const btnBusqueda = document.getElementById("btn-busqueda");
 btnBusqueda.addEventListener("click", () => {
-    const idBuscado = inputId.value;
-    buscarCategoria(idBuscado);});
+    const idBuscado = inputId.value.trim();
+
+    // Si el input está vacío → volver al listado completo
+    if (idBuscado === "") {
+        cargarCategorias();
+        return;
+    }
+
+    // Si hay un ID → buscar categoría
+    buscarCategoria(idBuscado);
+});
+
+inputId.addEventListener("input", () => {
+    if (inputId.value.trim() === "") {
+        cargarCategorias();
+    }
+});
+
+
 
 // ===============================
 // ELIMINAR CATEGORÍA
@@ -136,11 +153,13 @@ document.getElementById("botonEliminar").addEventListener("click", async () => {
 
         miModalEliminar.hide();
 
+        const data = await response.json(); // ← IMPORTANTE
+
         if (response.ok) {
             mostrarToast("Categoría eliminada con éxito");
             cargarCategorias();
         } else {
-            mostrarToast("Error al eliminar categoría");
+            mostrarToast(data.error || "Error al eliminar categoría");
         }
 
     } catch (error) {
@@ -190,6 +209,50 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
         mostrarToast("Error inesperado al actualizar");
     }
 });
+
+// ===============================
+// NUEVA CATEGORÍA - ABRIR MODAL
+// ===============================
+const modalNueva = document.getElementById("modalNuevaCategoria");
+const miModalNueva = Modal.getOrCreateInstance(modalNueva);
+
+document.getElementById("btnNuevaCategoria").addEventListener("click", () => {
+    document.getElementById("inputNuevaCategoria").value = ""; // limpiar input
+    miModalNueva.show();
+});
+
+// ===============================
+// CREAR NUEVA CATEGORÍA
+// ===============================
+document.getElementById("botonCrearCategoria").addEventListener("click", async () => {
+    const descripcion = document.getElementById("inputNuevaCategoria").value.trim();
+
+    if (descripcion === "") {
+        mostrarToast("La descripción no puede estar vacía");
+        return;
+    }
+
+    try {
+        const respuesta = await fetch("http://localhost:3000/api/categorias", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ descripcion })
+        });
+
+        if (respuesta.ok) {
+            mostrarToast("Categoría creada con éxito");
+            miModalNueva.hide();
+            cargarCategorias(); // refresca la tabla
+        } else {
+            mostrarToast("Error al crear categoría");
+        }
+
+    } catch (error) {
+        console.error("Error al crear categoría:", error);
+        mostrarToast("Error inesperado al crear categoría");
+    }
+});
+
 
 // ===============================
 // TOAST
