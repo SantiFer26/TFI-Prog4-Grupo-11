@@ -12,4 +12,13 @@ const softDelete = (id_categoria) => {
   return categoriasData.softDelete(id_categoria);
 };
 
-export default { getAll, getById, softDelete };
+const update = (id_categoria, descripcion) => {
+  return categoriasData.update(id_categoria, descripcion);
+};
+
+const create = (descripcion) => {
+  return categoriasData.create(descripcion);
+};
+
+
+export default { getAll, getById, softDelete, create, update };

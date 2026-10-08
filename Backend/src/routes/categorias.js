@@ -13,4 +13,10 @@ router.get("/:id", categoriasController.getById);
 // Editar categoría
 router.put("/", validarCategoria, categoriasController.update);
 
+// Agregar categoría
+router.post("/", validarCategoria, categoriasController.create);
+
+// Eliminar categoria
+router.patch("/", categoriasController.softDelete);
+
 export default router;

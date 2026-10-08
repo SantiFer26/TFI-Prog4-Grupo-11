@@ -48,14 +48,14 @@ const update = async (id_articulo, data) => {
         activo = $4
     WHERE id_articulo = $5
     RETURNING id_articulo, id_area, id_categoria, descripcion, activo
-  `, [id_area, id_categoria, descripcion, activo, id]);
+  `, [id_area, id_categoria, descripcion, activo, id_articulo]);
 
   return result.rows[0];
 };
 
 
 const remove = async (id) => {
-  await db.query("DELETE FROM articulos WHERE id = $1", [id]);
+  await db.query("DELETE FROM articulos WHERE id_articulos = $1", [id]);
 };
 
 

@@ -52,4 +52,22 @@ const softDelete = async (req, res) => {
   }
 };
 
-export default { getAll, getById, update, softDelete };
+const create = async (req, res) => {
+  try {
+    const { descripcion } = req.body;
+
+    const resultado = await categoriasService.create(descripcion);
+
+    if (resultado.rowCount === 1) {
+      res.status(201).json({ mensaje: "Categoría creada con éxito." });
+    } else {
+      res.status(400).json({ mensaje: "No se pudo crear la categoría." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al crear categoría" });
+  }
+};
+
+
+export default { getAll, getById, update, softDelete, create };
