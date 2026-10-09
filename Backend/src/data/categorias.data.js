@@ -33,4 +33,22 @@ const softDelete = async (id_categoria) => {
   return result;
 };
 
-export default { getAll, getById, softDelete };
+const update = async (id_categoria, descripcion) => {
+  const query = `
+    UPDATE categorias
+    SET descripcion = $1
+    WHERE id_categoria = $2 AND activo = 1
+  `;
+  return db.query(query, [descripcion, id_categoria]);
+};
+
+
+const create = async (descripcion) => {
+  const query = `
+    INSERT INTO categorias (descripcion, activo)
+    VALUES ($1, 1);
+  `;
+  return db.query(query, [descripcion]);
+};
+
+export default { getAll, getById, softDelete, update, create };
