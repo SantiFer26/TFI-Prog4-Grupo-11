@@ -12,8 +12,8 @@ const create = (data) => {
   return articulosData.create(data);
 };
 
-const update = (id, data) => {
-  return articulosData.update(id, data);
+const update = (id, descripcion) => {
+  return articulosData.update(id, descripcion);
 };
 
 const remove = (id) => {

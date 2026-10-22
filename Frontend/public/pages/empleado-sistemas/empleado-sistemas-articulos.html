@@ -36,8 +36,14 @@
                         <div class="col-auto me-auto">
                             <h3>Artículos</h3>
                         </div>
+                        <div class="col-4">
+                            <div class="input-group">
+                                <input type="text" id="input-id" class="form-control" placeholder="Ingrese el ID del artículo">
+                                <button type="button" id="btn-busqueda" class="btn btn-primary mt-auto w-auto">Buscar</button>
+                            </div>
+                        </div>
                         <div class="col-auto">
-                            <button type="button" class="btn btn-primary mt-auto w-auto">Nuevo</button>
+                            <button type="button" id="btnNuevoArticulo" class="btn btn-primary mt-auto w-auto">Nuevo artículo</button>
                         </div>
                     </div>
                 
@@ -45,59 +51,13 @@
                     <table class="table">
                         <thead>
                             <tr>
-                            <th scope="col">Código</th>
-                            <th scope="col">Categoria</th>
+                            <th scope="col">ID Artículo</th>
+                            <th scope="col">ID Categoría</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1000</th>
-                                <td>Periféricos</td>
-                                <td>Teclado</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-warning btn-sm" title="Editar">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" title="Eliminar">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1002</th>
-                                <td>Periféricos</td>
-                                <td>Mouse</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-warning btn-sm" title="Editar">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" title="Eliminar">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1033</th>
-                                <td>Almacenamiento</td>
-                                <td>Disco Rígido</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-warning btn-sm" title="Editar">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" title="Eliminar">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="tabla_articulos"> </tbody>
                     </table>
                 </div>    
             </main>
@@ -106,7 +66,87 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalEditarArticulo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar artículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label for="inputEditarArticulo" class="form-label">Descripción</label>
+                    <input type="text" id="inputEditarArticulo" class="form-control">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="botonGuardarCambios" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalNuevoArticulo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo artículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label for="inputNuevoArticulo" class="form-label">Descripción del Artículo</label>
+                    <input type="text" id="inputDescNuevoArticulo" class="form-control">
+
+                    <div class="mb-3">
+                        <label for="selectCategorias" class="form-label">Categoría</label>
+                        <select class="form-select" id="selectCategorias">
+                            <option id="defaultOption" value="" selected disabled>Seleccione una categoria...</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="botonCrearArticulo" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEliminarArticulo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar artículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="textoModal"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="botonEliminar" class="btn btn-primary">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="miToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <p id="textoToast"></p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/pages/empleado-sistemas/empleado-sistemas-articulos.js"></script>
 </body>
 
 </html>
