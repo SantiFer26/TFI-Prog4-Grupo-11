@@ -23,14 +23,22 @@ const create = async (req, res) => {
     const nuevo = await articulosService.create(req.body);
     res.status(201).json(nuevo);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error al crear artículo" });
   }
 };
 
 const update = async (req, res) => {
   try {
-    const actualizado = await articulosService.update(req.params.id, req.body);
-    res.status(200).json(actualizado);
+    const id_articulo = req.params.id;
+    const { descripcion } = req.body;
+    
+    const resultado = await articulosService.update(id_articulo, descripcion);
+    if (resultado.rowCount === 1) {
+      res.status(200).json({ mensaje: "Artículo actualizado con éxito." });
+    } else {
+      res.status(404).json({ mensaje: "El artículo no existe." });
+    }
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar artículo" });
   }
@@ -38,8 +46,14 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    await articulosService.remove(req.params.id);
-    res.status(204).send();
+    const id_articulo = req.params.id;
+    const resultado = await articulosService.remove(id_articulo);
+
+    if (resultado.rowCount === 1) {
+      res.status(204).json({ mensaje: "Artículo eliminado con éxito." });
+    } else {
+      res.status(404).json({ mensaje: "El recurso no existe o ya fue eliminado." });
+    }
   } catch (error) {
     res.status(500).json({ error: "Error al eliminar artículo" });
   }

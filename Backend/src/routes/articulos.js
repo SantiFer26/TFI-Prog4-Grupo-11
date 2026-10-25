@@ -17,7 +17,7 @@ router.post("/", validarArticulo, articulosController.create);
 router.put("/:id", validarArticulo, articulosController.update);
 
 
-// Eliminar artículo definitivamente
+// Eliminar artículo
 router.delete("/:id", articulosController.remove);
 
 export default router;

@@ -145,11 +145,7 @@ modalEliminar.addEventListener("show.bs.modal", event => {
 
 document.getElementById("botonEliminar").addEventListener("click", async () => {
     try {
-        const response = await fetch("http://localhost:3000/api/categorias", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_categoria: categoriaSeleccionada })
-        });
+        const response = await fetch(`http://localhost:3000/api/categorias/${categoriaSeleccionada}`, {method: "DELETE"});
 
         miModalEliminar.hide();
 
@@ -187,11 +183,10 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
     const nuevaDescripcion = document.getElementById("inputEditarCategoria").value.trim();
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/categorias", {
+        const respuesta = await fetch(`http://localhost:3000/api/categorias/${idCatEditar}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                id_categoria: idCatEditar,
                 descripcion: nuevaDescripcion
             })
         });
