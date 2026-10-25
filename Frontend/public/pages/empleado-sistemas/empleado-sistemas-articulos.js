@@ -152,11 +152,10 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
     const nuevaDescripcion = document.getElementById("inputEditarArticulo").value.trim();
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/articulos", {
+        const respuesta = await fetch(`http://localhost:3000/api/articulos/${idArtEditar}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                id_articulo: idArtEditar,
                 descripcion: nuevaDescripcion
             })
         });
@@ -254,11 +253,7 @@ modalEliminar.addEventListener("show.bs.modal", event => {
 
 document.getElementById("botonEliminar").addEventListener("click", async () => {
     try {
-        const response = await fetch("http://localhost:3000/api/articulos", {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_articulo: idArtEliminar })
-        });
+        const response = await fetch(`http://localhost:3000/api/articulos/${idArtEliminar}`, {method: "DELETE"});
 
         miModalEliminar.hide();
 

@@ -14,10 +14,10 @@ router.get("/:id", articulosController.getById);
 router.post("/", validarArticulo, articulosController.create);
 
 // Actualizar artículo
-router.put("/", validarArticulo, articulosController.update);
+router.put("/:id", validarArticulo, articulosController.update);
 
 
 // Eliminar artículo
-router.delete("/", articulosController.remove);
+router.delete("/:id", articulosController.remove);
 
 export default router;

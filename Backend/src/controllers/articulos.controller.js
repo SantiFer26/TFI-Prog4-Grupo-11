@@ -30,7 +30,8 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { id_articulo, descripcion } = req.body;
+    const id_articulo = req.params.id;
+    const { descripcion } = req.body;
     
     const resultado = await articulosService.update(id_articulo, descripcion);
     if (resultado.rowCount === 1) {
@@ -45,7 +46,7 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    const {id_articulo} = req.body;
+    const id_articulo = req.params.id;
     const resultado = await articulosService.remove(id_articulo);
 
     if (resultado.rowCount === 1) {

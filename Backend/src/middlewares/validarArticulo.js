@@ -14,7 +14,8 @@ export function validarArticulo(req, res, next) {
 
     // Validación al editar un artículo
     if (req.method === "PUT") {
-        const { id_articulo, descripcion } = req.body;
+        const id_articulo = req.params.id;
+        const { descripcion } = req.body;
         if (!descripcion || descripcion.trim() === "") {
         return res.status(400).json({ error: "La descripción no puede estar vacía" });
         }

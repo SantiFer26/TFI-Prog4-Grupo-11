@@ -21,7 +21,8 @@ const getById = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { id_categoria, descripcion } = req.body;
+    const id_categoria = req.params.id;
+    const { descripcion } = req.body;
 
     const resultado = await categoriasService.update(id_categoria, descripcion);
 
@@ -38,7 +39,7 @@ const update = async (req, res) => {
 
 const softDelete = async (req, res) => {
   try {
-    const { id_categoria } = req.body;
+    const id_categoria = req.params.id;
     const resultado = await categoriasService.softDelete(id_categoria);
 
     if (resultado.rowCount === 1) {
