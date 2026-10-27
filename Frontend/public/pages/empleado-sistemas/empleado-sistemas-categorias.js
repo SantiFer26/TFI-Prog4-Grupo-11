@@ -18,36 +18,43 @@ async function cargarCategorias() {
         tabla.innerHTML = "";
 
         categorias.forEach(cat => {
-            const fila = document.createElement("tr");
+            const filaActual = document.createElement("tr");
 
-            fila.innerHTML = `
-                <th scope="row">${cat.id_categoria}</th>
-                <td>${cat.descripcion}</td>
-                <td>
-                    <div class="d-flex justify-content-center gap-2">
-                        <button class="btn btn-warning btn-sm" 
-                                title="Editar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditarCategoria">
-                            Editar
-                        </button>
+            const idCat = document.createElement("th");
+            idCat.textContent = cat.id_categoria;
 
-                        <button class="btn btn-danger btn-sm" 
-                                title="Eliminar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEliminarCategoria">
-                            Eliminar
-                        </button>
-                    </div>
-                </td>
-            `;
+            const desc = document.createElement("td");
+            desc.textContent = cat.descripcion;
 
-            tabla.appendChild(fila);
-        });
+            const acciones = document.createElement("td");
+
+            const botonEditar = document.createElement("button");
+            botonEditar.classList.add("btn", "btn-warning", "btn-sm", "me-2");
+            botonEditar.textContent = "Editar";
+
+            botonEditar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+            botonEditar.setAttribute("data-descripcion", `${cat.descripcion}`)
+            botonEditar.setAttribute("data-bs-toggle", "modal");
+            botonEditar.setAttribute("data-bs-target", "#modalEditarCategoria");
+
+            const botonEliminar = document.createElement("button");
+            botonEliminar.classList.add("btn", "btn-danger", "btn-sm", "me-2");
+            botonEliminar.textContent = "Eliminar";
+
+            botonEliminar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+            botonEliminar.setAttribute("data-descripcion", `${cat.descripcion}`)
+            botonEliminar.setAttribute("data-bs-toggle", "modal");
+            botonEliminar.setAttribute("data-bs-target", "#modalEliminarCategoria");
+
+            acciones.appendChild(botonEditar);
+            acciones.appendChild(botonEliminar);
+
+            filaActual.appendChild(idCat);
+            filaActual.appendChild(desc);
+            filaActual.appendChild(acciones);
+
+            tabla.appendChild(filaActual);
+        })
 
     } catch (error) {
         console.error("Error cargando categorías:", error);
@@ -69,31 +76,38 @@ async function buscarCategoria(idBuscado) {
 
         const fila = document.createElement("tr");
 
-        fila.innerHTML = `
-                <th scope="row">${cat.id_categoria}</th>
-                <td>${cat.descripcion}</td>
-                <td>
-                    <div class="d-flex justify-content-center gap-2">
-                        <button class="btn btn-warning btn-sm" 
-                                title="Editar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditarCategoria">
-                            Editar
-                        </button>
+        const idCat = document.createElement("th");
+        idCat.textContent = cat.id_categoria;
 
-                        <button class="btn btn-danger btn-sm" 
-                                title="Eliminar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEliminarCategoria">
-                            Eliminar
-                        </button>
-                    </div>
-                </td>
-            `;
+        const desc = document.createElement("td");
+        desc.textContent = cat.descripcion;
+
+        const acciones = document.createElement("td");
+
+        const botonEditar = document.createElement("button");
+        botonEditar.classList.add("btn", "btn-warning", "btn-sm", "me-2");
+        botonEditar.textContent = "Editar";
+
+        botonEditar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+        botonEditar.setAttribute("data-descripcion", `${cat.descripcion}`)
+        botonEditar.setAttribute("data-bs-toggle", "modal");
+        botonEditar.setAttribute("data-bs-target", "#modalEditarCategoria");
+
+        const botonEliminar = document.createElement("button");
+        botonEliminar.classList.add("btn", "btn-danger", "btn-sm", "me-2");
+        botonEliminar.textContent = "Eliminar";
+
+        botonEliminar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+        botonEliminar.setAttribute("data-descripcion", `${cat.descripcion}`)
+        botonEliminar.setAttribute("data-bs-toggle", "modal");
+        botonEliminar.setAttribute("data-bs-target", "#modalEliminarCategoria");
+
+        acciones.appendChild(botonEditar);
+        acciones.appendChild(botonEliminar);
+
+        fila.appendChild(idCat);
+        fila.appendChild(desc);
+        fila.appendChild(acciones);
 
         tabla.appendChild(fila);
         
