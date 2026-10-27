@@ -6,7 +6,7 @@ const Toast = window.bootstrap.Toast;
 // ===============================
 async function cargarArticulos() {
     try {
-        const response = await fetch("http://localhost:3000/api/articulos");
+        const response = await fetch("http://localhost:3000/api/v1/articulos");
         const articulos = await response.json();
 
         const tabla = document.getElementById("tabla_articulos");
@@ -67,7 +67,7 @@ cargarArticulos();
 // ===============================
 async function buscarArticulo(idBuscado) {
     try {
-        const response = await fetch(`http://localhost:3000/api/articulos/${idBuscado}`);
+        const response = await fetch(`http://localhost:3000/api/v1/articulos/${idBuscado}`);
                 
         const art = await response.json();
         
@@ -152,7 +152,7 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
     const nuevaDescripcion = document.getElementById("inputEditarArticulo").value.trim();
 
     try {
-        const respuesta = await fetch(`http://localhost:3000/api/articulos/${idArtEditar}`, {
+        const respuesta = await fetch(`http://localhost:3000/api/v1/articulos/${idArtEditar}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -184,7 +184,7 @@ const miModalNuevo = Modal.getOrCreateInstance(modalNuevo);
 document.getElementById("btnNuevoArticulo").addEventListener("click", async () => {
     document.getElementById("inputDescNuevoArticulo").value = ""; // limpiar input 
 
-    const response = await fetch('http://localhost:3000/api/categorias');
+    const response = await fetch('http://localhost:3000/api/v1/categorias');
     const categorias = await response.json();
 
     const defaultOption = document.getElementById('defaultOption');
@@ -210,7 +210,7 @@ document.getElementById("botonCrearArticulo").addEventListener("click", async ()
     }
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/articulos", {
+        const respuesta = await fetch("http://localhost:3000/api/v1/articulos", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ descripcion: descripcion, id_categoria: idCat })
@@ -253,7 +253,7 @@ modalEliminar.addEventListener("show.bs.modal", event => {
 
 document.getElementById("botonEliminar").addEventListener("click", async () => {
     try {
-        const response = await fetch(`http://localhost:3000/api/articulos/${idArtEliminar}`, {method: "DELETE"});
+        const response = await fetch(`http://localhost:3000/api/v1/articulos/${idArtEliminar}`, {method: "DELETE"});
 
         miModalEliminar.hide();
 

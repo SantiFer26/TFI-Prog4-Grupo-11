@@ -12,7 +12,7 @@ let idCatEditar = 0;
 // ===============================
 async function cargarCategorias() {
     try {
-        const response = await fetch("http://localhost:3000/api/categorias");
+        const response = await fetch("http://localhost:3000/api/v1/categorias");
         const categorias = await response.json();
 
         tabla.innerHTML = "";
@@ -61,7 +61,7 @@ cargarCategorias();
 // ===============================
 async function buscarCategoria(idBuscado) {
     try {
-        const response = await fetch(`http://localhost:3000/api/categorias/${idBuscado}`);
+        const response = await fetch(`http://localhost:3000/api/v1/categorias/${idBuscado}`);
                 
         const cat = await response.json();
         
@@ -145,7 +145,7 @@ modalEliminar.addEventListener("show.bs.modal", event => {
 
 document.getElementById("botonEliminar").addEventListener("click", async () => {
     try {
-        const response = await fetch(`http://localhost:3000/api/categorias/${categoriaSeleccionada}`, {method: "DELETE"});
+        const response = await fetch(`http://localhost:3000/api/v1/categorias/${categoriaSeleccionada}`, {method: "DELETE"});
 
         miModalEliminar.hide();
 
@@ -183,7 +183,7 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
     const nuevaDescripcion = document.getElementById("inputEditarCategoria").value.trim();
 
     try {
-        const respuesta = await fetch(`http://localhost:3000/api/categorias/${idCatEditar}`, {
+        const respuesta = await fetch(`http://localhost:3000/api/v1/categorias/${idCatEditar}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -228,7 +228,7 @@ document.getElementById("botonCrearCategoria").addEventListener("click", async (
     }
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/categorias", {
+        const respuesta = await fetch("http://localhost:3000/api/v1/categorias", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ descripcion })

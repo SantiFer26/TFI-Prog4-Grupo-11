@@ -65,7 +65,7 @@
    <script>
     async function cargarIncidencias() {
     try {
-        const response = await fetch("http://localhost:3000/api/incidencias");
+        const response = await fetch("http://localhost:3000/api/v1/incidencias");
         const incidencias = await response.json();
 
         const tbody = document.querySelector("tbody");

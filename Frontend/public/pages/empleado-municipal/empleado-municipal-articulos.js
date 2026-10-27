@@ -10,7 +10,7 @@ function volver() {
 }
 async function cargarArticulos() {
     try {
-        const response = await fetch("http://localhost:3000/api/articulos");
+        const response = await fetch("http://localhost:3000/api/v1/articulos");
         const articulos = await response.json();
 
         const tbody = document.querySelector("tbody");
@@ -42,7 +42,7 @@ cargarArticulos();
         
 async function buscarArticulo(idBuscado) {
     try {
-        const response = await fetch(`http://localhost:3000/api/articulos/${idBuscado}`);
+        const response = await fetch(`http://localhost:3000/api/v1/articulos/${idBuscado}`);
                 
         const art = await response.json();
         
