@@ -112,7 +112,8 @@ async function buscarCategoria(idBuscado) {
         tabla.appendChild(fila);
         
     } catch (error) {
-        console.error("Error cargando categorias:", error);
+        console.error("Error al cargar la categoria:", error);
+        mostrarToast("Categoría no encontrada", "danger")
     }
 }
 
@@ -166,15 +167,15 @@ document.getElementById("botonEliminar").addEventListener("click", async () => {
         const data = await response.json(); // ← IMPORTANTE
 
         if (response.ok) {
-            mostrarToast("Categoría eliminada con éxito");
+            mostrarToast("Categoría eliminada con éxito", "success");
             cargarCategorias();
         } else {
-            mostrarToast(data.error || "Error al eliminar categoría");
+            mostrarToast(data.error || "Error al eliminar categoría", "danger");
         }
 
     } catch (error) {
         console.error(error);
-        mostrarToast("Error al eliminar categoría");
+        mostrarToast("Error al eliminar categoría", "danger");
     }
 });
 
@@ -206,16 +207,16 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
         });
 
         if (respuesta.ok) {
-            mostrarToast("Categoría actualizada con éxito");
+            mostrarToast("Categoría actualizada con éxito", "success");
             miModalEditar.hide();
             cargarCategorias();
         } else {
-            mostrarToast("Error al actualizar categoría");
+            mostrarToast("Error al actualizar categoría", "danger");
         }
 
     } catch (error) {
         console.error("Error al actualizar categoría:", error);
-        mostrarToast("Error inesperado al actualizar");
+        mostrarToast("Error inesperado al actualizar", "danger");
     }
 });
 
@@ -237,7 +238,7 @@ document.getElementById("botonCrearCategoria").addEventListener("click", async (
     const descripcion = document.getElementById("inputNuevaCategoria").value.trim();
 
     if (descripcion === "") {
-        mostrarToast("La descripción no puede estar vacía");
+        mostrarToast("La descripción no puede estar vacía", "danger");
         return;
     }
 
@@ -249,16 +250,16 @@ document.getElementById("botonCrearCategoria").addEventListener("click", async (
         });
 
         if (respuesta.ok) {
-            mostrarToast("Categoría creada con éxito");
+            mostrarToast("Categoría creada con éxito", "success");
             miModalNueva.hide();
             cargarCategorias(); // refresca la tabla
         } else {
-            mostrarToast("Error al crear categoría");
+            mostrarToast("Error al crear categoría", "danger");
         }
 
     } catch (error) {
         console.error("Error al crear categoría:", error);
-        mostrarToast("Error inesperado al crear categoría");
+        mostrarToast("Error inesperado al crear categoría", "danger");
     }
 });
 
@@ -266,7 +267,15 @@ document.getElementById("botonCrearCategoria").addEventListener("click", async (
 // ===============================
 // TOAST
 // ===============================
-function mostrarToast(texto) {
+function mostrarToast(texto, tipo) {
     document.getElementById("textoToast").innerText = texto;
+    if (tipo === "success") {
+        toast.classList.remove("text-bg-danger");
+        toast.classList.add("text-bg-success");
+    }
+    else {
+        toast.classList.remove("text-bg-success");
+        toast.classList.add("text-bg-danger");
+    }
     miToast.show();
 }

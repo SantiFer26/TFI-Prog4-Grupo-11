@@ -1,3 +1,6 @@
+const Toast = window.bootstrap.Toast;
+const toast = document.getElementById("miToast");
+const miToast = Toast.getOrCreateInstance(toast);
 
 async function cargarArticulos() {
     try {
@@ -76,7 +79,8 @@ async function buscarArticulo(idBuscado) {
         tbody.appendChild(fila);
         
     } catch (error) {
-        console.error("Error cargando artículos:", error);
+        console.error("Error al cargar el artículo:", error);
+        mostrarToast("Artículo no encontrado", "danger");
     }
 }
 
@@ -92,3 +96,19 @@ inputId.addEventListener("input", () => {
     }
 });
 
+
+// ===============================
+// TOAST
+// ===============================
+function mostrarToast(texto, tipo) {
+    document.getElementById("textoToast").innerText = texto;
+    if (tipo === "success") {
+        toast.classList.remove("text-bg-danger");
+        toast.classList.add("text-bg-success");
+    }
+    else {
+        toast.classList.remove("text-bg-success");
+        toast.classList.add("text-bg-danger");
+    }
+    miToast.show();
+}
