@@ -12,42 +12,49 @@ let idCatEditar = 0;
 // ===============================
 async function cargarCategorias() {
     try {
-        const response = await fetch("http://localhost:3000/api/categorias");
+        const response = await fetch("http://localhost:3000/api/v1/categorias");
         const categorias = await response.json();
 
         tabla.innerHTML = "";
 
         categorias.forEach(cat => {
-            const fila = document.createElement("tr");
+            const filaActual = document.createElement("tr");
 
-            fila.innerHTML = `
-                <th scope="row">${cat.id_categoria}</th>
-                <td>${cat.descripcion}</td>
-                <td>
-                    <div class="d-flex justify-content-center gap-2">
-                        <button class="btn btn-warning btn-sm" 
-                                title="Editar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditarCategoria">
-                            Editar
-                        </button>
+            const idCat = document.createElement("th");
+            idCat.textContent = cat.id_categoria;
 
-                        <button class="btn btn-danger btn-sm" 
-                                title="Eliminar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEliminarCategoria">
-                            Eliminar
-                        </button>
-                    </div>
-                </td>
-            `;
+            const desc = document.createElement("td");
+            desc.textContent = cat.descripcion;
 
-            tabla.appendChild(fila);
-        });
+            const acciones = document.createElement("td");
+
+            const botonEditar = document.createElement("button");
+            botonEditar.classList.add("btn", "btn-warning", "btn-sm", "me-2");
+            botonEditar.textContent = "Editar";
+
+            botonEditar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+            botonEditar.setAttribute("data-descripcion", `${cat.descripcion}`)
+            botonEditar.setAttribute("data-bs-toggle", "modal");
+            botonEditar.setAttribute("data-bs-target", "#modalEditarCategoria");
+
+            const botonEliminar = document.createElement("button");
+            botonEliminar.classList.add("btn", "btn-danger", "btn-sm", "me-2");
+            botonEliminar.textContent = "Eliminar";
+
+            botonEliminar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+            botonEliminar.setAttribute("data-descripcion", `${cat.descripcion}`)
+            botonEliminar.setAttribute("data-bs-toggle", "modal");
+            botonEliminar.setAttribute("data-bs-target", "#modalEliminarCategoria");
+
+            acciones.appendChild(botonEditar);
+            acciones.appendChild(botonEliminar);
+
+            filaActual.appendChild(idCat);
+            filaActual.appendChild(desc);
+            filaActual.appendChild(acciones);
+
+            tabla.appendChild(filaActual);
+        })
 
     } catch (error) {
         console.error("Error cargando categorías:", error);
@@ -61,7 +68,7 @@ cargarCategorias();
 // ===============================
 async function buscarCategoria(idBuscado) {
     try {
-        const response = await fetch(`http://localhost:3000/api/categorias/${idBuscado}`);
+        const response = await fetch(`http://localhost:3000/api/v1/categorias/${idBuscado}`);
                 
         const cat = await response.json();
         
@@ -69,36 +76,44 @@ async function buscarCategoria(idBuscado) {
 
         const fila = document.createElement("tr");
 
-        fila.innerHTML = `
-                <th scope="row">${cat.id_categoria}</th>
-                <td>${cat.descripcion}</td>
-                <td>
-                    <div class="d-flex justify-content-center gap-2">
-                        <button class="btn btn-warning btn-sm" 
-                                title="Editar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditarCategoria">
-                            Editar
-                        </button>
+        const idCat = document.createElement("th");
+        idCat.textContent = cat.id_categoria;
 
-                        <button class="btn btn-danger btn-sm" 
-                                title="Eliminar"
-                                data-id="${cat.id_categoria}"
-                                data-descripcion="${cat.descripcion}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEliminarCategoria">
-                            Eliminar
-                        </button>
-                    </div>
-                </td>
-            `;
+        const desc = document.createElement("td");
+        desc.textContent = cat.descripcion;
+
+        const acciones = document.createElement("td");
+
+        const botonEditar = document.createElement("button");
+        botonEditar.classList.add("btn", "btn-warning", "btn-sm", "me-2");
+        botonEditar.textContent = "Editar";
+
+        botonEditar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+        botonEditar.setAttribute("data-descripcion", `${cat.descripcion}`)
+        botonEditar.setAttribute("data-bs-toggle", "modal");
+        botonEditar.setAttribute("data-bs-target", "#modalEditarCategoria");
+
+        const botonEliminar = document.createElement("button");
+        botonEliminar.classList.add("btn", "btn-danger", "btn-sm", "me-2");
+        botonEliminar.textContent = "Eliminar";
+
+        botonEliminar.setAttribute("data-id-cat", `${cat.id_categoria}`)
+        botonEliminar.setAttribute("data-descripcion", `${cat.descripcion}`)
+        botonEliminar.setAttribute("data-bs-toggle", "modal");
+        botonEliminar.setAttribute("data-bs-target", "#modalEliminarCategoria");
+
+        acciones.appendChild(botonEditar);
+        acciones.appendChild(botonEliminar);
+
+        fila.appendChild(idCat);
+        fila.appendChild(desc);
+        fila.appendChild(acciones);
 
         tabla.appendChild(fila);
         
     } catch (error) {
-        console.error("Error cargando categorias:", error);
+        console.error("Error al cargar la categoria:", error);
+        mostrarToast("Categoría no encontrada", "danger")
     }
 }
 
@@ -145,22 +160,22 @@ modalEliminar.addEventListener("show.bs.modal", event => {
 
 document.getElementById("botonEliminar").addEventListener("click", async () => {
     try {
-        const response = await fetch(`http://localhost:3000/api/categorias/${categoriaSeleccionada}`, {method: "DELETE"});
+        const response = await fetch(`http://localhost:3000/api/v1/categorias/${categoriaSeleccionada}`, {method: "DELETE"});
 
         miModalEliminar.hide();
 
         const data = await response.json(); // ← IMPORTANTE
 
         if (response.ok) {
-            mostrarToast("Categoría eliminada con éxito");
+            mostrarToast("Categoría eliminada con éxito", "success");
             cargarCategorias();
         } else {
-            mostrarToast(data.error || "Error al eliminar categoría");
+            mostrarToast(data.error || "Error al eliminar categoría", "danger");
         }
 
     } catch (error) {
         console.error(error);
-        mostrarToast("Error al eliminar categoría");
+        mostrarToast("Error al eliminar categoría", "danger");
     }
 });
 
@@ -183,7 +198,7 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
     const nuevaDescripcion = document.getElementById("inputEditarCategoria").value.trim();
 
     try {
-        const respuesta = await fetch(`http://localhost:3000/api/categorias/${idCatEditar}`, {
+        const respuesta = await fetch(`http://localhost:3000/api/v1/categorias/${idCatEditar}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -192,16 +207,16 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
         });
 
         if (respuesta.ok) {
-            mostrarToast("Categoría actualizada con éxito");
+            mostrarToast("Categoría actualizada con éxito", "success");
             miModalEditar.hide();
             cargarCategorias();
         } else {
-            mostrarToast("Error al actualizar categoría");
+            mostrarToast("Error al actualizar categoría", "danger");
         }
 
     } catch (error) {
         console.error("Error al actualizar categoría:", error);
-        mostrarToast("Error inesperado al actualizar");
+        mostrarToast("Error inesperado al actualizar", "danger");
     }
 });
 
@@ -223,28 +238,28 @@ document.getElementById("botonCrearCategoria").addEventListener("click", async (
     const descripcion = document.getElementById("inputNuevaCategoria").value.trim();
 
     if (descripcion === "") {
-        mostrarToast("La descripción no puede estar vacía");
+        mostrarToast("La descripción no puede estar vacía", "danger");
         return;
     }
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/categorias", {
+        const respuesta = await fetch("http://localhost:3000/api/v1/categorias", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ descripcion })
         });
 
         if (respuesta.ok) {
-            mostrarToast("Categoría creada con éxito");
+            mostrarToast("Categoría creada con éxito", "success");
             miModalNueva.hide();
             cargarCategorias(); // refresca la tabla
         } else {
-            mostrarToast("Error al crear categoría");
+            mostrarToast("Error al crear categoría", "danger");
         }
 
     } catch (error) {
         console.error("Error al crear categoría:", error);
-        mostrarToast("Error inesperado al crear categoría");
+        mostrarToast("Error inesperado al crear categoría", "danger");
     }
 });
 
@@ -252,7 +267,15 @@ document.getElementById("botonCrearCategoria").addEventListener("click", async (
 // ===============================
 // TOAST
 // ===============================
-function mostrarToast(texto) {
+function mostrarToast(texto, tipo) {
     document.getElementById("textoToast").innerText = texto;
+    if (tipo === "success") {
+        toast.classList.remove("text-bg-danger");
+        toast.classList.add("text-bg-success");
+    }
+    else {
+        toast.classList.remove("text-bg-success");
+        toast.classList.add("text-bg-danger");
+    }
     miToast.show();
 }

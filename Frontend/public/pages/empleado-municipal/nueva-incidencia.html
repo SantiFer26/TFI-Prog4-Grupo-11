@@ -9,13 +9,13 @@
 </head>
 <body>
     <header>
-        <img class="logo" src="./assets/logo-muni.png" alt="Logo Muni">
+        <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
     </header>
     <div class="main-container">
       <nav>
         <ul>
           <li>
-            <a id="btn-volver" class="active">Atrás</a>
+            <a href="/pages/empleado-municipal/empleado-municipal-articulos.html">Atrás</a>
           </li>
         </ul>
       </nav>
@@ -53,18 +53,7 @@
         </main>
       </div>
     </div>
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      const from = params.get("from");
-
-      const btnVolver = document.getElementById("btn-volver");
-
-      if (from === "articulos") {
-      btnVolver.href = "/pages/empleado-municipal-articulos.html";
-      } else {
-      btnVolver.href = "/empleado-municipal-incidencias.html";
-      }
-    </script>
+    <script type="module" src="pages/empleado-municipal/nueva-incidencia.js"></script>
     <script type="module" src="/src/main.js"></script>
 
 </body>

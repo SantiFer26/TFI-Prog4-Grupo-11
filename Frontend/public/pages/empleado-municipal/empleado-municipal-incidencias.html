@@ -35,7 +35,7 @@
                             <h3>Mis Incidencias</h3>
                         </div>
                         <div class="col-auto">
-                            <a href="./nueva-incidencia.html?from=incidencias"><button type="button" class="btn btn-primary mt-auto w-auto">Nueva</button></a>
+                            <a href="./empleado-municipal-articulos.html"class="btn btn-primary mt-auto w-auto">Nueva</a>
                         </div>
                     </div>
                 
@@ -65,7 +65,7 @@
    <script>
     async function cargarIncidencias() {
     try {
-        const response = await fetch("http://localhost:3000/api/incidencias");
+        const response = await fetch("http://localhost:3000/api/v1/incidencias");
         const incidencias = await response.json();
 
         const tbody = document.querySelector("tbody");

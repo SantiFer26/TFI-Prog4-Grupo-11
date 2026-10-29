@@ -3,9 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import incidenciasRoutes from "./routes/incidencias.js";
-import articulosRoutes from "./routes/articulos.js";
-import categoriasRoutes from "./routes/categorias.js";
+import incidenciasRoutes from "./v1/routes/incidencias.js";
+import articulosRoutes from "./v1/routes/articulos.js";
+import categoriasRoutes from "./v1/routes/categorias.js";
 
 import { manejarErrores, rutaNoEncontrada } from "./middlewares/index.js";
 
@@ -23,9 +23,9 @@ app.get("/", (req, res) => {
 });
 
 // Rutas REST
-app.use("/api/incidencias", incidenciasRoutes);
-app.use("/api/articulos", articulosRoutes);
-app.use("/api/categorias", categoriasRoutes);
+app.use("/api/v1/incidencias", incidenciasRoutes);
+app.use("/api/v1/articulos", articulosRoutes);
+app.use("/api/v1/categorias", categoriasRoutes);
 
 // Ruta no encontrada
 app.use(rutaNoEncontrada);

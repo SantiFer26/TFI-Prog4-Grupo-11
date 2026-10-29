@@ -6,7 +6,7 @@ const Toast = window.bootstrap.Toast;
 // ===============================
 async function cargarArticulos() {
     try {
-        const response = await fetch("http://localhost:3000/api/articulos");
+        const response = await fetch("http://localhost:3000/api/v1/articulos");
         const articulos = await response.json();
 
         const tabla = document.getElementById("tabla_articulos");
@@ -67,7 +67,7 @@ cargarArticulos();
 // ===============================
 async function buscarArticulo(idBuscado) {
     try {
-        const response = await fetch(`http://localhost:3000/api/articulos/${idBuscado}`);
+        const response = await fetch(`http://localhost:3000/api/v1/articulos/${idBuscado}`);
                 
         const art = await response.json();
         
@@ -106,6 +106,7 @@ async function buscarArticulo(idBuscado) {
 
     } catch (error) {
         console.error("Error al cargar el artículo:", error);
+        mostrarToast("Artículo no encontrado", "danger");
     }
 }
 
@@ -152,7 +153,7 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
     const nuevaDescripcion = document.getElementById("inputEditarArticulo").value.trim();
 
     try {
-        const respuesta = await fetch(`http://localhost:3000/api/articulos/${idArtEditar}`, {
+        const respuesta = await fetch(`http://localhost:3000/api/v1/articulos/${idArtEditar}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -161,16 +162,16 @@ document.getElementById("botonGuardarCambios").addEventListener("click", async (
         });
 
         if (respuesta.ok) {
-            mostrarToast("Artículo actualizado con éxito");
+            mostrarToast("Artículo actualizado con éxito", "success");
             miModalEditar.hide();
             cargarArticulos();
         } else {
-            mostrarToast("Error al actualizar artículo");
+            mostrarToast("Error al actualizar artículo", "danger");
         }
 
     } catch (error) {
         console.error("Error al actualizar artículo:", error);
-        mostrarToast("Error inesperado al actualizar");
+        mostrarToast("Error inesperado al actualizar", "danger");
     }
 });
 
@@ -184,7 +185,7 @@ const miModalNuevo = Modal.getOrCreateInstance(modalNuevo);
 document.getElementById("btnNuevoArticulo").addEventListener("click", async () => {
     document.getElementById("inputDescNuevoArticulo").value = ""; // limpiar input 
 
-    const response = await fetch('http://localhost:3000/api/categorias');
+    const response = await fetch('http://localhost:3000/api/v1/categorias');
     const categorias = await response.json();
 
     const defaultOption = document.getElementById('defaultOption');
@@ -205,28 +206,28 @@ document.getElementById("botonCrearArticulo").addEventListener("click", async ()
     const idCat = document.getElementById("selectCategorias").value;
 
     if (descripcion === "" || idCat === "") {
-        mostrarToast("Ningún campo debe estar vacío");
+        mostrarToast("Ningún campo debe estar vacío", "danger");
         return;
     }
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/articulos", {
+        const respuesta = await fetch("http://localhost:3000/api/v1/articulos", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ descripcion: descripcion, id_categoria: idCat })
         });
 
         if (respuesta.ok) {
-            mostrarToast("Artículo creado con éxito");
+            mostrarToast("Artículo creado con éxito", "success");
             miModalNuevo.hide();
             cargarArticulos(); // refresca la tabla
         } else {
-            mostrarToast("Error al crear artículo");
+            mostrarToast("Error al crear artículo", "danger");
         }
 
     } catch (error) {
         console.error("Error al crear artículo:", error);
-        mostrarToast("Error inesperado al crear artículo");
+        mostrarToast("Error inesperado al crear artículo", "danger");
     }
 });
 
@@ -253,29 +254,37 @@ modalEliminar.addEventListener("show.bs.modal", event => {
 
 document.getElementById("botonEliminar").addEventListener("click", async () => {
     try {
-        const response = await fetch(`http://localhost:3000/api/articulos/${idArtEliminar}`, {method: "DELETE"});
+        const response = await fetch(`http://localhost:3000/api/v1/articulos/${idArtEliminar}`, {method: "DELETE"});
 
         miModalEliminar.hide();
 
         if (response.ok) {
-            mostrarToast("Artículo eliminado con éxito");
+            mostrarToast("Artículo eliminado con éxito", "success");
             cargarArticulos();
         } 
         else {
             const data = await response.json();
-            mostrarToast(data.error || "Error al eliminar artículo");
+            mostrarToast(data.error || "Error al eliminar artículo", "danger");
         }
 
     } catch (error) {
         console.error(error);
-        mostrarToast("Error al eliminar artículo");
+        mostrarToast("Error al eliminar artículo", "danger");
     }
 });
 
 // ===============================
 // TOAST
 // ===============================
-function mostrarToast(texto) {
+function mostrarToast(texto, tipo) {
     document.getElementById("textoToast").innerText = texto;
+    if (tipo === "success") {
+        toast.classList.remove("text-bg-danger");
+        toast.classList.add("text-bg-success");
+    }
+    else {
+        toast.classList.remove("text-bg-success");
+        toast.classList.add("text-bg-danger");
+    }
     miToast.show();
 }
