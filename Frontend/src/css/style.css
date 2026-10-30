@@ -6,12 +6,22 @@ header{
     background-color: rgb(30,30,30);
 }
 
+#titulo_principal {
+    font-weight: 600;
+}
+#parrafo-1 {
+    font-family: sans-serif;
+    font-weight: 400;
+}
+
+
 @media screen and (min-width: 480px) {
     header{
         justify-content: flex-end;
     }
     .main-container{
         max-width: 100%;
+        text-align: center;
     }
     .form .group-form{
         margin: 12px;
@@ -142,4 +152,64 @@ tbody.table-group-divider tr:hover td {
     cursor: pointer;
     background-color: #8cc856;
     color: white;
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.main-container.login-page {
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+}
+
+.login-page .container-form {
+    width:100%;
+    max-height: 500px;
+    max-width: 500px;
+    padding: 80px 80px;
+
+    background-color: white;
+    border-radius: 5px;
+}
+
+.login-page form {
+    flex-direction: column;
+    overflow: visible;
+}
+
+.login-page form .group-form {
+    width: auto;
+}
+
+.login-page form .button,
+.login-page #btn-iniciar-sesion {
+    width: 50%;
+    margin-top: 15px;
+}
+
+body.login-body {
+    margin: 0;
+}
+
+.login-body .titulo {
+    text-align: center;
+    font-size: 30px;
+}
+
+.login-page form .button,
+.login-page #enlace-contrasenia {
+    margin-top: 18px;
+}
+
+nav.nav-formulario{
+    top: 92px;
+    left: 0px;
+    height: auto;
+    width: auto;
+    padding: 0;
+    position: absolute;
 }

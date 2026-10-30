@@ -77,9 +77,9 @@ div.container-form{
     align-items: flex-start;
 }
 
-.group-form select{
-    width: 90%;
-    height: 30px;
+.group-form select {
+    width: 100%;
+    height: auto;
 }
 
 .group-form input{
@@ -123,5 +123,9 @@ form .button input{
 
 #desc-form {
     grid-column: 1 / -1;
+    width: 100%;
+}
+
+select {
     width: 100%;
 }

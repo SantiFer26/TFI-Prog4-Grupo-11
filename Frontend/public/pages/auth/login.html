@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../src/css/style.css">
+    <title>Inicio de sesión</title>
+</head>
+<body class="login-body">
+    <header>
+        <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
+    </header>
+    <div class="main-container login-page">
+        <nav class="nav-formulario">
+            <ul>
+                <li>
+                    <a href="../../../index.html">Volver al inicio</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="container-form">
+            <div class="titulo">Inicio de sesión</div>
+            <form id="formulario">
+                <div class="group-form">
+                    <label for="nombre-usuario" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="input_usuario" name="usuario">
+                </div>
+                <div class="group-form">
+                    <label for="contrasenia" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control contrasenia" id="input_contrasenia" name="contrasenia">
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-iniciar-sesion">Acceder</button>
+                <a href="" id="enlace-contrasenia">¿Olvidaste tu contraseña?</a>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../../../src/main.js"></script>
+</body>
+</html>
