@@ -22,11 +22,16 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const nueva = await incidenciasService.create(req.body);
-    res.status(201).json(nueva);
+    const {id_articulo, id_prioridad, descripcion_pedido} = req.body;
+    const nueva = await incidenciasService.create(id_articulo, id_prioridad, descripcion_pedido);
+    if (nueva.rowCount === 1) {
+      res.status(201).json({ mensaje: "Incidencia creada con éxito." });
+    } else {
+      res.status(400).json({ mensaje: "No se pudo crear la incidencia." });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al crear incidencia" });
+    res.status(500).json({ error: "Error al crear la incidencia" });
   }
 };
 

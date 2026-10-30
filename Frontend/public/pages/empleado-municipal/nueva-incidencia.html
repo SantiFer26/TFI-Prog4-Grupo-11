@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="./style.css">
     <title>Nueva incidencia</title>
 </head>
 <body>
@@ -12,7 +12,7 @@
         <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
     </header>
     <div class="main-container">
-      <nav>
+      <nav class="nav-formulario">
         <ul>
           <li>
             <a href="/pages/empleado-municipal/empleado-municipal-articulos.html">Atrás</a>
@@ -23,37 +23,46 @@
         <main> 
           <div class= "container-form">
             <div class="titulo">Incidencia</div>
-            <form>
+            <form id="formulario">
               <div class="group-form">
-                <span>Articulo</span>
-                <select name="opciones-articulo" id="opciones-articulo">
-                  <option value="articulo1">Articulo 1</option>
-                  <option value="articulo2">Articulo 2</option>
-                  <option value="articulo3">Articulo 3</option>
-                  <option value="articulo4">Articulo 4</option>
-                </select>
+                  <label for="ID-Articulo" class="form-label">ID Artículo</label>
+                  <input type="text" class="form-control" id="input_id_articulo" name="id_articulo" disabled>
               </div>
               <div class="group-form">
-                <span>Prioridad</span>
-                <select name="opciones-prioridad" id="opciones-prioridad">
-                  <option value=1>Baja</option>
+                  <label for="Articulo" class="form-label">Artículo</label>
+                  <input type="text" class="form-control" id="input_desc_articulo" name="descripcion_articulo" disabled>
+              </div>
+              <div class="group-form">
+                <label for="Prioridad" class="form-label">Prioridad</label>
+                <select name="prioridad" id="opciones-prioridad">
+                  <option value=3>Baja</option>
                   <option value=2>Media</option>
-                  <option value=3>Alta</option>
+                  <option value=1>Alta</option>
                 </select>
               </div>
-              <div class="group-form">
-                <span>Descripción</span>
-                <input type="text" placeholder="Ingrese una breve descripción">
+              <div class="group-form" id="desc-form">
+                <label for="Descripcion" class="form-label">Descripción</label>
+                <textarea id="input_descripcion" placeholder="Describa el inconveniente..." name="descripcion_pedido"></textarea>
               </div>
-              <div class="button">
-                <input type="button" value="Registrar">
-              </div>
+              <button type="submit" class="btn btn-primary" id="btn-crear-incidencia">Registrar Incidencia</button>
             </form>
           </div>
         </main>
       </div>
     </div>
-    <script type="module" src="pages/empleado-municipal/nueva-incidencia.js"></script>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="miToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <p id="textoToast"></p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./nueva-incidencia.js"></script>
     <script type="module" src="/src/main.js"></script>
 
 </body>
