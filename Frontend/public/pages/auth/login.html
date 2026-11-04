@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../../src/css/style.css">
     <title>Inicio de sesión</title>
 </head>
+
 <body class="login-body">
     <header>
         <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
@@ -20,7 +22,7 @@
         </nav>
         <div class="container-form">
             <div class="titulo">Inicio de sesión</div>
-            <form id="formulario">
+            <form id="formulario-login">
                 <div class="group-form">
                     <label for="nombre-usuario" class="form-label">Usuario</label>
                     <input type="text" class="form-control" id="input_usuario" name="usuario">
@@ -35,6 +37,18 @@
         </div>
     </div>
 
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="miToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <p id="textoToast"></p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="../../../src/main.js"></script>
+    <script type="module" src="./login.js"></script>
 </body>
 </html>

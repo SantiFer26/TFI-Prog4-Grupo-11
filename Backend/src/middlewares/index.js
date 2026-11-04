@@ -4,3 +4,4 @@ export { validarIncidencia } from "./validarIncidencia.js";
 export { validarId } from "./validarId.js";
 export { manejarErrores } from "./manejarErrores.js";
 export { rutaNoEncontrada } from "./rutaNoEncontrada.js";
+export { default as autenticar } from "./autenticar.js";
