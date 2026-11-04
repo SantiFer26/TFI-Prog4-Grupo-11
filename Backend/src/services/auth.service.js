@@ -8,4 +8,4 @@ const buscarPorId = (usuarioId) => {
     return authData.buscarPorId(usuarioId);
 }
 
-export default { buscarUsuario };
+export default { buscarUsuario, buscarPorId };
