@@ -13,7 +13,7 @@
         <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
     </header>
     <div class="main-container">
-        <nav>
+        <nav class="main-nav">
             <ul>
                 <li>
                     <a href="./empleado-municipal-articulos.html">Artículos</a>
@@ -21,10 +21,13 @@
                 <li>
                     <a href="./empleado-municipal-incidencias.html">Incidencias</a>
                 </li>
+            </ul>
+        </nav>
+        <nav class="secondary-nav">
+            <ul>
                 <li>
-                    <a href="../../../index.html" class="active" aria-current="page" href="#">Salir</a>
+                    <a href="../auth/login.html" class="active" aria-current="page" id="cerrar-sesion">Cerrar Sesión</a>
                 </li>
-
             </ul>
         </nav>
         <div class="right-container">
@@ -47,6 +50,7 @@
 
     <!-- <h1>Incidencias</h1> -->
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="./empleado-municipal.js"></script>
 </body>
 
 </html>

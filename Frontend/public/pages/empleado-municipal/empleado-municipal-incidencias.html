@@ -13,7 +13,7 @@
         <img class="logo" src="../../../assets/logo-muni.png" alt="Logo Muni">
     </header>
     <div class="main-container">
-        <nav>
+        <nav class="main-nav">
             <ul>
                 <li>
                     <a href="./empleado-municipal-articulos.html">Artículos</a>
@@ -24,7 +24,13 @@
                 <li>
                     <a href="./empleado-municipal.html" class="active" aria-current="page" href="#">Atrás</a>
                 </li>
-
+            </ul>
+        </nav>
+        <nav class="secondary-nav">
+            <ul>
+                <li>
+                    <a href="../auth/login.html" class="active" aria-current="page" id="cerrar-sesion">Cerrar Sesión</a>
+                </li>
             </ul>
         </nav>
         <div class="right-container">
@@ -62,46 +68,7 @@
     </div>
 
     <script type="module" src="/src/main.js"></script>
-   <script>
-    async function cargarIncidencias() {
-    try {
-        const response = await fetch("http://localhost:3000/api/v1/incidencias");
-        const incidencias = await response.json();
-
-        const tbody = document.querySelector("tbody");
-        tbody.innerHTML = "";
-
-        incidencias.forEach(inc => {
-
-            // Traducir estado
-            let estadoTexto = "";
-            switch (inc.id_estado) {
-                case 1: estadoTexto = "Pendiente"; break;
-                case 2: estadoTexto = "En proceso"; break;
-                case 3: estadoTexto = "Finalizada"; break;
-                default: estadoTexto = "Desconocido";
-            }
-
-            const fila = document.createElement("tr");
-            fila.innerHTML = `
-                <td>${inc.id_incidencia}</td>
-                <td>${new Date(inc.creado).toLocaleDateString()}</td>
-                <td>${inc.prioridad}</td>
-                <td>${estadoTexto}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm">Cancelar</button>
-                </td>
-            `;
-            tbody.appendChild(fila);
-        });
-
-    } catch (error) {
-        console.error("Error cargando incidencias:", error);
-    }
-}
-
-cargarIncidencias();
-</script>
+    <script type="module" src="./empleado-municipal-incidencias.js"></script>
 
 
 </body>

@@ -205,11 +205,20 @@ body.login-body {
     margin-top: 18px;
 }
 
-nav.nav-formulario{
+nav.nav-formulario {
     top: 92px;
     left: 0px;
     height: auto;
     width: auto;
     padding: 0;
     position: absolute;
+}
+
+nav.secondary-nav {
+    position: absolute;
+    top: 92px;
+    right: 0px;
+    height: auto;
+    width: auto;
+    padding: 0;
 }
