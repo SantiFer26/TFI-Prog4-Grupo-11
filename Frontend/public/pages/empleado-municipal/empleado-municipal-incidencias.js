@@ -24,15 +24,33 @@ async function cargarIncidencias() {
                 }
 
                 const fila = document.createElement("tr");
-                fila.innerHTML = `
-                    <td>${inc.id_incidencia}</td>
-                    <td>${new Date(inc.creado).toLocaleDateString()}</td>
-                    <td>${inc.prioridad}</td>
-                    <td>${estadoTexto}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm">Cancelar</button>
-                    </td>
-                `;
+
+                const id_incidencia = document.createElement("td");
+                id_incidencia.textContent = inc.id_incidencia;
+
+                const creada_el = document.createElement("td");
+                creada_el.textContent = new Date(inc.creado).toLocaleDateString();
+
+                const prioridad = document.createElement("td");
+                prioridad.textContent = inc.prioridad;
+
+                const estado_incidencia = document.createElement("td");
+                estado_incidencia.textContent = estadoTexto;
+
+                const acciones = document.createElement("td");
+                const botonCancelar = document.createElement("button");
+
+                botonCancelar.classList.add("btn", "btn-danger", "btn-sm");
+                botonCancelar.textContent = "Cancelar";
+
+                acciones.appendChild(botonCancelar);
+
+                fila.appendChild(id_incidencia);
+                fila.appendChild(creada_el);
+                fila.appendChild(prioridad);
+                fila.appendChild(estado_incidencia);
+                fila.appendChild(acciones);
+
                 tbody.appendChild(fila);
             });
 

@@ -12,7 +12,7 @@ const datos = decodificarToken(token);
 
 
 const h1Inicio = document.getElementById("h1-inicio-sistemas");
-h1Inicio.textContent = `¡Bienvenido ${datos.nombres}!`;
+h1Inicio.textContent = `¡Bienvenido/a ${datos.nombres}!`;
 const parrafoInicio = document.getElementById("p-inicio-sistemas");
 parrafoInicio.textContent = "¿Qué es lo que querés hacer hoy?";
 

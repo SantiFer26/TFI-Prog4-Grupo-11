@@ -12,10 +12,20 @@ const datos = decodificarToken(token);
 
 
 const h1Inicio = document.getElementById("h1-inicio-sistemas");
-h1Inicio.textContent = `¡Bienvenido ${datos.nombres}!`;
+h1Inicio.textContent = `¡Bienvenido/a ${datos.nombres}!`;
 const parrafoInicio = document.getElementById("p-inicio-sistemas");
 parrafoInicio.textContent = "¿Qué es lo que querés hacer hoy?";
 
+
+const btnCrearIncidencia = document.getElementById("btnCrearIncidencia");
+btnCrearIncidencia.addEventListener("click", () => {
+    window.location.href = "./empleado-municipal-articulos.html";
+})
+
+const btnVerIncidencias = document.getElementById("btnVerIncidencias");
+btnVerIncidencias.addEventListener("click", () => {
+    window.location.href = "./empleado-municipal-incidencias.html";
+})
 
 // ===============================
 // Cerrar Sesión
