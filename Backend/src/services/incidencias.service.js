@@ -8,8 +8,8 @@ const getById = (id) => {
   return incidenciasData.getById(id);
 };
 
-const create = (data) => {
-  return incidenciasData.create(data);
+const create = (id_art, id_prioridad, desc_pedido) => {
+  return incidenciasData.create(id_art, id_prioridad, desc_pedido);
 };
 
 const update = (id, data) => {

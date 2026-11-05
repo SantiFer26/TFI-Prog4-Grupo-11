@@ -3,14 +3,67 @@ const toast = document.getElementById("miToast");
 const miToast = Toast.getOrCreateInstance(toast);
 
 async function cargarArticulos() {
-    try {
-        const response = await fetch("http://localhost:3000/api/v1/articulos");
-        const articulos = await response.json();
+    if (!sessionStorage.getItem("token")) {
+        mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    } else {
+        try {
+            const response = await fetch("http://localhost:3000/api/v1/articulos", 
+                            {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
 
-        const tbody = document.querySelector("tbody");
-        tbody.innerHTML = ""; // limpiar tabla
+            const articulos = await response.json();
 
-        articulos.forEach(art => {
+            const tbody = document.querySelector("tbody");
+            tbody.innerHTML = ""; // limpiar tabla
+
+            articulos.forEach(art => {
+                const fila = document.createElement("tr");
+
+                const id_articulo = document.createElement("th");
+                id_articulo.textContent = art.id_articulo;
+
+                const id_categoria = document.createElement("td");
+                id_categoria.textContent = art.id_categoria;
+            
+                const descripcion = document.createElement("td");
+                descripcion.textContent = art.descripcion;
+
+                const accion = document.createElement('td');
+                const enlace = document.createElement('a');
+                enlace.href = `./nueva-incidencia.html?from=articulos&articulo=${art.id_articulo}`;
+                enlace.className = 'btn btn-success btn-sm';
+                enlace.textContent = 'Crear incidencia';
+                accion.appendChild(enlace);
+
+                fila.appendChild(id_articulo);
+                fila.appendChild(id_categoria);
+                fila.appendChild(descripcion);
+                fila.appendChild(accion);
+
+                tbody.appendChild(fila);
+
+            });
+        } catch (error) {
+            console.error("Error cargando artículos:", error);
+        }
+    }
+}
+
+cargarArticulos();
+        
+async function buscarArticulo(idBuscado) {
+    if (!sessionStorage.getItem("token")) {
+        mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    }
+    else {
+        try {
+            const response = await fetch(`http://localhost:3000/api/v1/articulos/${idBuscado}`, 
+                            {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
+                
+            const art = await response.json();
+        
+            const tbody = document.querySelector("tbody");
+            tbody.innerHTML = ""; // limpiar tabla
+
             const fila = document.createElement("tr");
 
             const id_articulo = document.createElement("th");
@@ -35,52 +88,11 @@ async function cargarArticulos() {
             fila.appendChild(accion);
 
             tbody.appendChild(fila);
-
-        });
-    } catch (error) {
-        console.error("Error cargando artículos:", error);
-    }
-}
-
-cargarArticulos();
         
-async function buscarArticulo(idBuscado) {
-    try {
-        const response = await fetch(`http://localhost:3000/api/v1/articulos/${idBuscado}`);
-                
-        const art = await response.json();
-        
-        const tbody = document.querySelector("tbody");
-        tbody.innerHTML = ""; // limpiar tabla
-
-        const fila = document.createElement("tr");
-
-        const id_articulo = document.createElement("th");
-        id_articulo.textContent = art.id_articulo;
-
-        const id_categoria = document.createElement("td");
-        id_categoria.textContent = art.id_categoria;
-            
-        const descripcion = document.createElement("td");
-        descripcion.textContent = art.descripcion;
-
-        const accion = document.createElement('td');
-        const enlace = document.createElement('a');
-        enlace.href = `./nueva-incidencia.html?from=articulos&articulo=${art.id_articulo}`;
-        enlace.className = 'btn btn-success btn-sm';
-        enlace.textContent = 'Crear incidencia';
-        accion.appendChild(enlace);
-
-        fila.appendChild(id_articulo);
-        fila.appendChild(id_categoria);
-        fila.appendChild(descripcion);
-        fila.appendChild(accion);
-
-        tbody.appendChild(fila);
-        
-    } catch (error) {
-        console.error("Error al cargar el artículo:", error);
-        mostrarToast("Artículo no encontrado", "danger");
+        } catch (error) {
+            console.error("Error al cargar el artículo:", error);
+            mostrarToast("Artículo no encontrado", "danger");
+        }
     }
 }
 
@@ -95,6 +107,14 @@ inputId.addEventListener("input", () => {
         cargarArticulos();
     }
 });
+
+// ===============================
+// Ordenar por Descripción: A-Z
+// ===============================
+
+// ===============================
+// Ordenar por Descripción: Z-A
+// ===============================
 
 
 // ===============================
@@ -112,3 +132,11 @@ function mostrarToast(texto, tipo) {
     }
     miToast.show();
 }
+
+// ===============================
+// Cerrar Sesión
+// ===============================
+const cerrarSesion = document.getElementById("cerrar-sesion");
+cerrarSesion.addEventListener("click", () => {
+    sessionStorage.removeItem("token");
+});

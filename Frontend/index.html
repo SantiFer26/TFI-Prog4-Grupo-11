@@ -13,31 +13,27 @@
         <img class="logo" src="assets/logo-muni.png" alt="Logo Muni">
     </header>
     <div class="main-container">
-        <nav>
+        <nav class="nav-index">
             <ul>
-                <li>
-                    <a href="/pages/empleado-municipal/empleado-municipal.html">Empleado Municipal</a>
-                </li>
-                <li>
-                    <a href="/pages/empleado-sistemas/empleado-sistemas.html">Empleado Sistemas</a>
-                </li>
                 <li>
                     <a href="/pages/director/director-sistemas.html">Director</a>
                 </li>                
             </ul>
         </nav>
-        <div class="right-container">
-            <main>
-                <div class="jumbotron">
-                 <h1 class="display-4">Gestión de Incidencias</h1>
-                    <p class="lead">Sistema de gestión y control de incidencias informáticas del municipio.</p>
-                    <hr class="my-4">
-                    <p>Si aún no tenés usuario para ingresar al sistema hace click en el botón.</p>
-                    <p class="lead">
-                        <button type="button" class="btn btn-primary mt-auto w-auto">Crear Usuario</button>
-                    </p>
-                </div>
-            </main>
+        <main>
+            <div class="jumbotron">
+                <h1 class="display-4" id="titulo_principal">Gestión de Incidencias</h1>
+                <p class="lead" id="parrafo-1">Sistema de gestión y control de incidencias informáticas del municipio.</p>
+                <p>Inicia sesión para acceder a todas las funcionalidades</p>
+                <p class="lead">
+                    <a href="./public/pages/auth/login.html" class="btn btn-primary mt-auto w-auto">Iniciar Sesión</a>
+                </p>
+                <p>¿Todavía no estás registrado? Si aún no tenés usuario para ingresar al sistema hace click en el botón</p>
+                <p class="lead">
+                    <button type="button" class="btn btn-primary mt-auto w-auto">Crear Usuario</button>
+                </p>
+            </div>
+        </main>
             <!-- <footer>
             </footer> -->
         </div>

@@ -10,16 +10,9 @@ header{
     header{
         justify-content: flex-end;
     }
-    .incidencia-container{
-        max-width: 100%;
-    }
     .form .group-form{
         margin: 12px;
         width: 100%; 
-    }
-    .incidencia-container form{
-        max-height: 400px;
-        overflow-y: scroll;
     }
 }
 
@@ -27,11 +20,11 @@ header img.logo {
     height: 60px;
 }
 
-nav{
-    width: 250px; 
-    flex-shrink: 0;
-
-    height: 35vh;
+nav.nav-formulario{
+    width: auto;
+    height: auto;
+    flex-shrink: 1;
+    position: absolute;
 }
 
 nav ul{
@@ -70,37 +63,23 @@ main{
     padding: 2rem;
 }
 
-div.incidencia-container{
-    background: linear-gradient(0deg, white, green);
-    justify-content: flex-start;
-    align-items: stretch; 
-    min-height: calc(100vh - 92px);
-}
-
 div.container-form{
     max-height: 700px;
+    max-width: 700px;
     width: 80%;
     padding: 25px 30px;
     background-color: white;
     border-radius: 5px;
-}
+    margin: 40px auto;
 
-.incidencia-container .titulo{
-    font-size: 25px;
-    font-weight: 500;
-}
-
-.incidencia-container form{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 10px 12px 0;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.group-form select{
-    width: 90%;
-    height: 30px;
+.group-form select {
+    width: 100%;
+    height: auto;
 }
 
 .group-form input{
@@ -122,4 +101,31 @@ form .button{
 form .button input{
     width: 100%;
     height: 100%;
+}
+
+.group-form .form-control {
+    width: 100%;
+    padding: 15px 10px;
+}
+
+#input_descripcion {
+    width: 100%;
+    min-height: 100px;
+    padding: 6px 10px;
+
+    resize: none;
+
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    overflow-y: auto;
+}
+
+#desc-form {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+select {
+    width: 100%;
 }
