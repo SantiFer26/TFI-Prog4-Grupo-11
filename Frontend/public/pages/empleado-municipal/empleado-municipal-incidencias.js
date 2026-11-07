@@ -1,3 +1,4 @@
+console.log("SE CARGO EL JS DE INCIDENCIAS");
 async function cargarIncidencias() {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
@@ -6,9 +7,9 @@ async function cargarIncidencias() {
         try {
             const response = await fetch("http://localhost:3000/api/v1/incidencias", 
                             {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
-                            
+            console.log(response.status);                
             const incidencias = await response.json();
-
+            console.log(incidencias);
             const tbody = document.querySelector("tbody");
             tbody.innerHTML = "";
 
