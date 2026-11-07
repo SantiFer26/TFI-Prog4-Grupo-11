@@ -35,7 +35,7 @@ formLogin.addEventListener('submit', async (e) => {
                 break; 
 
             case 3: 
-                window.location.href = "../director/director-sistemas.html";
+                window.location.href = "../director/director-sistemas-dashboard.html";
                 break; 
         }
     }
