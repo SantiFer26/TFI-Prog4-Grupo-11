@@ -27,7 +27,7 @@ formLogin.addEventListener('submit', async (e) => {
 
         switch (data.rol) {
             case 1: 
-                window.location.href = "../empleado-municipal/empleado-municipal.html";
+                window.location.href = "../director/director-sistemas.html";
                 break;
 
             case 2: 
@@ -35,8 +35,9 @@ formLogin.addEventListener('submit', async (e) => {
                 break; 
 
             case 3: 
-                window.location.href = "../director/director-sistemas.html";
-                break; 
+                window.location.href = "../empleado-municipal/empleado-municipal.html";
+                break;
+                
         }
     }
     catch (error) {
