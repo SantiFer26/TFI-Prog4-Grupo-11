@@ -6,6 +6,7 @@ const Modal = window.bootstrap.Modal;
 async function cargarArticulos() {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     }
     else {
         try {
@@ -74,6 +75,7 @@ cargarArticulos();
 async function buscarArticulo(idBuscado) {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     }
     else {
         try {
@@ -149,6 +151,7 @@ inputId.addEventListener("input", () => {
 // ===============================
 if (!sessionStorage.getItem("token")) {
     mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    return;
 }
 else {
     const modalEditar = document.getElementById("modalEditarArticulo");
@@ -197,6 +200,7 @@ else {
 // ===============================
 if (!sessionStorage.getItem("token")) {
     mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    return;
 }
 else {
     const modalNuevo = document.getElementById("modalNuevoArticulo");
@@ -259,6 +263,7 @@ else {
 // ===============================
 if (!sessionStorage.getItem("token")) {
     mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    return;
 }
 else {
     const modalEliminar = document.getElementById("modalEliminarArticulo");

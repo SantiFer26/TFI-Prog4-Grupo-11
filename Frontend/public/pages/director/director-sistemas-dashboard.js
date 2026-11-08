@@ -22,6 +22,7 @@ buscarDatosDashboard();
 async function buscarDatosDashboard() {
     if (!token) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     } else {    
         try {
             const response = await fetch(`http://localhost:3000/api/v1/incidencias/datos-dashboard`, 

@@ -5,6 +5,7 @@ const miToast = Toast.getOrCreateInstance(toast);
 async function cargarArticulos() {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     } else {
         try {
             const response = await fetch("http://localhost:3000/api/v1/articulos", 
@@ -53,6 +54,7 @@ cargarArticulos();
 async function buscarArticulo(idBuscado) {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     }
     else {
         try {

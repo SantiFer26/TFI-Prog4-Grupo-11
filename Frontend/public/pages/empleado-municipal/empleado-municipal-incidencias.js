@@ -1,6 +1,7 @@
 async function cargarIncidencias() {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     }
     else {
         try {
