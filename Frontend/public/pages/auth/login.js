@@ -36,7 +36,8 @@ formLogin.addEventListener('submit', async (e) => {
 
             case 3: 
                 window.location.href = "../empleado-municipal/empleado-municipal.html";
-                break; 
+                break;
+                
         }
     }
     catch (error) {

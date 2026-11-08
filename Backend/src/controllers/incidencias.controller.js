@@ -1,37 +1,98 @@
+
 import incidenciasService from "../services/incidencias.service.js";
 
 const getAll = async (req, res) => {
+    console.log("ENTRE A GETALL");
+    console.log(req.usuario);
   try {
-    const incidencias = await incidenciasService.getAll();
-    res.status(200).json(incidencias);
-  } catch (error) {
+
+    let rows = [];
+    console.log(req.usuario);
+    if (req.usuario.rol === 1) {
+      rows = await incidenciasService.getAll();
+    }
+    console.log(req.usuario);
+    if (req.usuario.rol === 2) {
+      rows = await incidenciasService.asignadasAId(
+        req.usuario.id_usuario
+      );
+    }
+    
+    if (req.usuario.rol === 3) {
+        console.log(req.usuario);
+      rows = await incidenciasService.creadasPorId(
+        req.usuario.id_usuario
+      );
+    }
+
+    res.status(200).json(rows);
+
+  } catch(error) {
     console.error(error);
-    res.status(500).json({ error: "Error al obtener incidencias" });
+    res.status(500).json({
+      error: "Error al obtener incidencias"
+    });
   }
 };
 
-const getById = async (req, res) => {
-  try {
-    const incidencia = await incidenciasService.getById(req.params.id);
-    res.status(200).json(incidencia);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al obtener incidencia" });
-  }
+const creadasPorId = async (req, res) => {
+  try{
+      let rows = [];
+
+      // ES EMPLEADO MUNICIPAL
+      if (req.usuario.rol === 3){
+          rows = await incidenciasService.creadasPorId(req.usuario.id_usuario);
+      }
+
+      // ES EMPLEADO AREA SISTEMAS
+      if (req.usuario.rol === 2){
+          rows = await incidenciasService.asignadasAId(req.usuario.id_usuario);
+      }
+
+      if(rows === null){
+          return res.status(200).json({mensaje: 'Incidencias no encontradas.'});
+      }
+
+      res.status(200).json({
+          incidencias: rows
+      });
+
+    }catch(error){
+          console.error('Error al obtener incidencias:', error.message);
+          return res.status(500).json({ 
+              error: 'Error interno del servidor.' 
+          });
+      }
 };
 
 const create = async (req, res) => {
+    console.log(req.body);
+    console.log(req.usuario);
+
   try {
-    const {id_articulo, id_prioridad, descripcion_pedido} = req.body;
-    const nueva = await incidenciasService.create(id_articulo, id_prioridad, descripcion_pedido);
-    if (nueva.rowCount === 1) {
-      res.status(201).json({ mensaje: "Incidencia creada con éxito." });
-    } else {
-      res.status(400).json({ mensaje: "No se pudo crear la incidencia." });
-    }
+
+      const incidencia = { 
+          id_articulo : req.body.id_articulo, 
+          creado_por : req.usuario.id_usuario,
+          descripcion_pedido : req.body.descripcion_pedido,
+          prioridad : req.body.prioridad
+      }
+
+      const rows = await incidenciasService.create(incidencia);
+      
+      if(rows === null){
+          return res.status(404).json({mensaje: 'Incidencia no creada.'});
+      }
+
+      return res.status(201).json({
+          mensaje: 'Incidencia creada.',
+          categoria: rows
+      });
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al crear la incidencia" });
+      console.error(error);
+      return res.status(500).json({ 
+        error: "Error al crear la incidencia" });
   }
 };
 
@@ -55,4 +116,113 @@ const remove = async (req, res) => {
   }
 };
 
-export default { getAll, getById, create, update, remove };
+const asignarA = async (req, res) => {
+        try{
+                   
+            const incidencia = { 
+                id_incidencia : req.params.id_incidencia, 
+                asignado_a: req.body.asignado_a
+            }
+        
+            const rows = await incidenciasService.asignarA(incidencia);
+
+            if(rows === null){
+                return res.status(404).json({mensaje: 'Incidencia no asignada.'});
+            }
+
+            return res.status(200).json({
+                mensaje: 'Incidencia asignada a empleado del área.',
+                incidencia: rows
+            });
+            
+        }catch(error){
+            console.error('Error al asignar Incidencia:', error.message);
+            return res.status(500).json({ 
+                error: 'Error interno del servidor.' 
+            });
+        }
+      };
+
+const finalizarIncidencia = async (req, res) => {
+        try{
+                   
+            const incidencia = { 
+                id_incidencia : req.params.id_incidencia, 
+                resolucion: req.body.resolucion
+            }
+        
+            const rows = await incidenciasService.finalizarIncidencia(incidencia);
+
+            if(rows === null){
+                return res.status(404).json({mensaje: 'Incidencia no finalizada.'});
+            }
+
+            return res.status(200).json({
+                mensaje: 'Incidencia finalizada.',
+                incidencia: rows
+            });
+            
+        }catch(error){
+            console.error('Error al asignar Incidencia:', error.message);
+            return res.status(500).json({ 
+                error: 'Error interno del servidor.' 
+            });
+        }
+      };
+
+const canclar = async (req, res) => {
+        try{
+            const id_incidencia = req.params.id_incidencia; 
+            const rows = await incidenciasService.cancelarIncidencia(id_incidencia);
+
+            if(rows === null){
+                return res.status(200).json({mensaje: 'Incidencia no cancelada.'});
+            }
+
+            return res.status(200).json({
+                mensaje: 'Incidencia cancelada.',
+                incidencia: rows
+            });
+            
+        }catch(error){
+            console.error('Error al cancelar Incidencia:', error.message);
+            return res.status(500).json({ 
+                error: 'Error interno del servidor.' 
+            });
+        }
+    };
+
+const generarInforme = async (req, res) => {
+        try{
+            const {buffer, headers} = await incidenciasService.generarInforme();
+            res.set(headers)
+            res.status(200).end(buffer);
+            
+        }catch(error){
+            console.error('Error al generar informe de Incidencia:', error.message);
+            return res.status(500).json({ 
+                error: 'Error interno del servidor.' 
+            });
+        }
+      };
+
+const datosDashboard = async (req, res) => {
+        try{
+            const rows = await incidenciasService.datosDashboard();
+
+            if(rows === null){
+                return res.status(200).json({mensaje: 'Sin datos para el dashboard.'});
+            }
+
+            res.status(200).json({
+                dashboard: rows
+            });
+
+        }catch(error){
+            console.error('Error al obtener datos dashboard:', error.message);
+            return res.status(500).json({ 
+                error: 'Error interno del servidor.' 
+            });
+        }
+    };
+export default { getAll, creadasPorId, create, update, remove, asignarA, finalizarIncidencia, canclar, generarInforme, datosDashboard };
