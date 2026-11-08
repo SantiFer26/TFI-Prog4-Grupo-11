@@ -27,7 +27,7 @@ formLogin.addEventListener('submit', async (e) => {
 
         switch (data.rol) {
             case 1: 
-                window.location.href = "../director/director-sistemas.html";
+                window.location.href = "../director/director-sistemas-dashboard.html";
                 break;
 
             case 2: 

@@ -8,6 +8,7 @@ const tabla = document.getElementById("tabla_categorias");
 async function cargarCategorias() {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     }
     else {
         try {
@@ -71,6 +72,7 @@ cargarCategorias();
 async function buscarCategoria(idBuscado) {
     if (!sessionStorage.getItem("token")) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
     }
     else {
         try {
@@ -153,6 +155,7 @@ inputId.addEventListener("input", () => {
 // ===============================
 if (!sessionStorage.getItem("token")) {
     mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    return;
 }
 else {
     let categoriaSeleccionada = null;
@@ -200,6 +203,7 @@ else {
 // ===============================
 if (!sessionStorage.getItem("token")) {
     mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    return;
 }
 else {
     let idCatEditar = 0;
@@ -249,6 +253,7 @@ else {
 // ===============================
 if (!sessionStorage.getItem("token")) {
     mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+    return;
 }
 else {
     const modalNueva = document.getElementById("modalNuevaCategoria");

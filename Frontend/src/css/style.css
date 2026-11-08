@@ -222,3 +222,22 @@ nav.secondary-nav {
     width: auto;
     padding: 0;
 }
+
+.container-director {
+    display: flex;
+    position: absolute;
+    top: 30%;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.card-amarillo-oscuro {
+    background-color: #f7b901;
+}
+
+#container-tabla-director {
+    position: absolute;
+    top: 200px;
+    left: 6%;
+}

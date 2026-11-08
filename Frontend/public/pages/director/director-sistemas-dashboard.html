@@ -15,59 +15,74 @@
     <div class="main-container">
         <nav>
             <ul>
-                
-                <li>
-                    <a href="director-sistemas-dashboard.html">Dashboard</a>
-                </li>
                 <li>
                     <a href="director-sistemas-incidencias.html">Incidencias</a>
                 </li>
+            </ul>
+        </nav>
+        <nav class="secondary-nav">
+            <ul>
                 <li>
-                    <a href="../../../index.html" class="active" aria-current="page" href="#">Salir</a>
+                    <a href="../auth/login.html" class="active" aria-current="page" id="cerrar-sesion">Cerrar Sesión</a>
                 </li>
             </ul>
         </nav>
-        <div class="right-container">
-            <main>
-                <div class="container">                    
+        <div class="container-director flex-wrap justify-content-center">
+            <main class="text-center">
+                <h1 id="h1-inicio-sistemas"></h1>
+                <p id="p-inicio-sistemas" class="fw-semibold"></p>
+                <div>                    
                     <div class="card-group">
-                        <div class="card text-bg-warning">
-                            <div class="card-body">
-                                <h5 class="card-title">Pendientes</h5>
-                                <h2 class="card-title">15</h2>
-                                <p class="card-text">*La más antigua es del 14/08/2026.</p>
-                                <button class="btn btn-primary btn-sm" title="Asignar">
-                                    PDF
-                                </button>
-                                <button class="btn btn-primary btn-sm" title="Asignar">
-                                    CSV
-                                </button>
+                        <div class="card card-amarillo-oscuro text-white me-3">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <h5 class="card-title fs-3 fw-semibold">Pendientes</h5>
+                                <h2 class="card-title display-4 fw-semibold" id="total_pendientes">38</h2>
+                                <p class="card-text">
+                                    <a class="btn btn-link link-light link-offset-2 link-underline-opacity-50 
+                                    link-underline-opacity-100-hover fs-5 p-0" id="inc-pendientes" 
+                                    href="director-sistemas-incidencias.html?estado=pendiente">
+                                        Ver más
+                                    </a>
+                                </p>
                             </div>
                         </div>
-                        <div class="card text-bg-danger">
-                            <div class="card-body">
-                                <h5 class="card-title">Pendientes Prioritarias</h5>
-                                <h2 class="card-title">5</h2>
-                                <p class="card-text"><a href="director-sistemas-incidencias.html">Ver mas</a></p>
-                                <button class="btn btn-primary btn-sm" title="Asignar">
-                                    PDF
-                                </button>
-                                <button class="btn btn-primary btn-sm" title="Asignar">
-                                    CSV
-                                </button>
+                        <div class="card text-bg-danger me-3">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <h5 class="card-title fs-3 fw-semibold">Pendientes Prioritarias</h5>
+                                <h2 class="card-title display-4 fw-semibold" id="total_prioritarias">29</h2>
+                                <p class="card-text">
+                                    <a class="btn btn-link link-light link-offset-2 link-underline-opacity-50 
+                                    link-underline-opacity-100-hover fs-5 p-0" id="inc-prioritarias" 
+                                    href="director-sistemas-incidencias.html?estado=pendiente&prioridad=1">
+                                        Ver más
+                                    </a>
+                                </p>
                             </div>
                         </div>
-                        <div class="card text-bg-secondary">
-                            <div class="card-body">
-                                <h5 class="card-title">Canceladas</h5>
-                                <h2 class="card-title">65</h2>
-                                <p class="card-text"><a href="director-sistemas-incidencias.html">Ver mas</a></p>
-                                <button class="btn btn-primary btn-sm" title="Asignar">
-                                    PDF
-                                </button>
-                                <button class="btn btn-primary btn-sm" title="Asignar">
-                                    CSV
-                                </button>
+                        <div class="card text-bg-secondary me-3">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <h5 class="card-title fs-3 fw-semibold">Canceladas</h5>
+                                <h2 class="card-title display-4 fw-semibold" id="total_canceladas">35</h2>
+                                <p class="card-text">
+                                    <a class="btn btn-link link-light link-offset-2 link-underline-opacity-50 
+                                    link-underline-opacity-100-hover fs-5 p-0" id="inc-canceladas" 
+                                    href="director-sistemas-incidencias.html?estado=cancelada">
+                                        Ver más
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card text-bg-info text-white">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <h5 class="card-title fs-3 fw-semibold">Totales</h5>
+                                <h2 class="card-title display-4 fw-semibold" id="incidencias_totales">100</h2>
+                                <p class="card-text">
+                                    <a class="btn btn-link link-light link-offset-2 link-underline-opacity-50 
+                                    link-underline-opacity-100-hover fs-5 p-0" id="inc-totales" 
+                                    href="director-sistemas-incidencias.html">
+                                        Ver más
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -78,7 +93,19 @@
         </div>
     </div>
 
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="miToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <p id="textoToast"></p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="./director-sistemas-dashboard.js"></script>
 </body>
 
 </html>

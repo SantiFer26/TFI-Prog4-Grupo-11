@@ -14,86 +14,42 @@
     </header>
     <div class="main-container">
         <nav>
+            <ul>   
+                <li>
+                    <a href="director-sistemas-dashboard.html">Volver al dashboard</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="secondary-nav">
             <ul>
-                
                 <li>
-                    <a href="director-sistemas-dashboard.html">Dashboard</a>
-                </li>
-                <li>
-                    <a href="director-sistemas-incidencias.html">Incidencias</a>
-                </li>
-                <li>
-                    <a href="../../../index.html" class="active" aria-current="page" href="#">Salir</a>
+                    <a href="../auth/login.html" class="active" aria-current="page" id="cerrar-sesion">Cerrar Sesión</a>
                 </li>
             </ul>
         </nav>
         <div class="right-container">
             <main>
-                <div class="container text-center">                    
-                    <div class="row">
-                        <div class="col-auto me-auto">
-                            <h3>Incidencias</h3>
+                <div class="container text-center" id="container-tabla-director">
+                    <div id="contenedor-tabla" class="d-none mt-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 id="titulo-tabla-director"></h3>
+                            <button id="btn-reporte-pdf" class="btn btn-primary btn-sm">
+                                <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+                            </button>
                         </div>
+                        <table class="table table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha Creación</th>
+                                    <th>Prioridad</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpo-tabla"></tbody>
+                        </table>
                     </div>
-                
-                
-                    <table class="table">
-                        <thead>
-                            <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Creada el</th>
-                            <th scope="col">Prioridad</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">91</th>
-                                <td>10/07/2026</td>
-                                <td>Alta</td>
-                                <td>Finalizada</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" title="Asignar" disabled>
-                                        Asignar a
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">101</th>
-                                <td>20/07/2026</td>
-                                <td>Media</td>
-                                <td>Cancelada</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" title="Asignar" disabled>
-                                        Asignar a
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">141</th>
-                                <td>10/08/2026</td>
-                                <td>Media</td>
-                                <td>Pendiente</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" title="Asignar" >
-                                        Asignar a
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">198</th>
-                                <td>25/07/2026</td>
-                                <td>Alta</td>
-                                <td>En proceso</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" title="Asignar" >
-                                        Asignar a
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>  
             </main>
             <!-- <footer>
@@ -101,7 +57,19 @@
         </div>
     </div>
 
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="miToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <p id="textoToast"></p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="./director-sistemas-incidencias.js"></script>
 </body>
 
 </html>
