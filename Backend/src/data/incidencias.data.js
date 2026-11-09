@@ -51,7 +51,7 @@ const asignarA = async (incidencia) => {
             const {id_incidencia, asignado_a} = incidencia;
 
             const sql = `UPDATE incidencias  
-                        SET asignado_a = $1
+                        SET asignado_a = $1, id_estado = 2
                         WHERE id_incidencia = $2
                         RETURNING *;`;
 
@@ -61,10 +61,10 @@ const asignarA = async (incidencia) => {
                 return null;
             }    
 
-            /*// NUEVO REGISTRO PARA EL HISTORIAL DE incidencias_estados
+            // Al cambiar de estado a "En Proceso", se agrega registro en incidencias_estados
             const sql_insert = `INSERT INTO incidencias_estados (id_incidencia, id_estado)
                                 VALUES ($1, 2)`;
-            await client.query(sql_insert, [id_incidencia]); */                               
+            await client.query(sql_insert, [id_incidencia]);                                
             
             await client.query('COMMIT');
 
