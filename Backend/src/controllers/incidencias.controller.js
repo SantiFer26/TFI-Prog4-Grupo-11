@@ -69,55 +69,54 @@ const create = async (req, res) => {
     console.log(req.body);
     console.log(req.usuario);
 
-  try {
+    try {
+        const incidencia = { 
+            id_articulo : req.body.id_articulo, 
+            creado_por : req.usuario.id_usuario,
+            descripcion_pedido : req.body.descripcion_pedido,
+            prioridad : req.body.prioridad
+        }
 
-      const incidencia = { 
-          id_articulo : req.body.id_articulo, 
-          creado_por : req.usuario.id_usuario,
-          descripcion_pedido : req.body.descripcion_pedido,
-          prioridad : req.body.prioridad
-      }
+        const rows = await incidenciasService.create(incidencia);
 
-      const rows = await incidenciasService.create(incidencia);
-      
-      if(rows === null){
-          return res.status(404).json({mensaje: 'Incidencia no creada.'});
-      }
+        if(rows === null){
+            return res.status(404).json({mensaje: 'Incidencia no creada.'});
+        }
 
-      return res.status(201).json({
-          mensaje: 'Incidencia creada.',
-          categoria: rows
-      });
+        return res.status(201).json({
+            mensaje: 'Incidencia creada.',
+            categoria: rows
+        });
 
-  } catch (error) {
-      console.error(error);
-      return res.status(500).json({ 
-        error: "Error al crear la incidencia" });
-  }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            error: "Error al crear la incidencia" });
+    }
 };
 
 const update = async (req, res) => {
-  try {
-    const actualizada = await incidenciasService.update(req.params.id, req.body);
-    res.status(200).json(actualizada);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al actualizar incidencia" });
-  }
+    try {
+        const actualizada = await incidenciasService.update(req.params.id, req.body);
+        res.status(200).json(actualizada);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al actualizar incidencia" });
+    }
 };
 
 const remove = async (req, res) => {
-  try {
-    await incidenciasService.remove(req.params.id);
-    res.status(204).send();
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al eliminar incidencia" });
-  }
+    try {
+        await incidenciasService.remove(req.params.id);
+        res.status(204).send();
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al eliminar incidencia" });
+    }
 };
 
 const asignarA = async (req, res) => {
-        try{       
+        try {       
             const incidencia = { 
                 id_incidencia : req.params.id_incidencia, 
                 asignado_a: req.body.asignado_a
@@ -134,17 +133,16 @@ const asignarA = async (req, res) => {
                 incidencia: rows
             });
             
-        }catch(error){
+        } catch(error) {
             console.error('Error al asignar Incidencia:', error.message);
             return res.status(500).json({ 
                 error: 'Error interno del servidor.' 
             });
         }
-      };
+};
 
 const finalizarIncidencia = async (req, res) => {
-        try{
-                   
+        try {                 
             const incidencia = { 
                 id_incidencia : req.params.id_incidencia, 
                 resolucion: req.body.resolucion
@@ -161,16 +159,16 @@ const finalizarIncidencia = async (req, res) => {
                 incidencia: rows
             });
             
-        }catch(error){
+        } catch (error) {
             console.error('Error al asignar Incidencia:', error.message);
             return res.status(500).json({ 
                 error: 'Error interno del servidor.' 
             });
         }
-      };
+};
 
 const cancelar = async (req, res) => {
-        try{
+        try {
             const id_incidencia = req.params.id_incidencia; 
             const { descripcion_res } = req.body;
             const rows = await incidenciasService.cancelarIncidencia(id_incidencia, descripcion_res);
@@ -184,7 +182,7 @@ const cancelar = async (req, res) => {
                 incidencia: rows
             });
             
-        }catch(error){
+        } catch (error) {
             console.error('Error al cancelar Incidencia:', error.message);
             return res.status(500).json({ 
                 error: 'Error interno del servidor.' 
@@ -192,52 +190,22 @@ const cancelar = async (req, res) => {
         }
     };
 
-const iniciarIncidencia = async (req, res) => {
-    try {
-
-        const incidencia = {
-            id_incidencia: req.params.id_incidencia
-        };
-
-        const rows = await incidenciasService.iniciarIncidencia(incidencia);
-
-        if (rows === null) {
-            return res.status(404).json({
-                mensaje: 'Incidencia no encontrada.'
-            });
-        }
-
-        return res.status(200).json({
-            mensaje: 'Incidencia iniciada.',
-            incidencia: rows
-        });
-
-    } catch (error) {
-
-        console.error('Error al iniciar incidencia:', error.message);
-
-        return res.status(500).json({
-            error: 'Error interno del servidor.'
-        });
-    }
-};
-
 const generarInforme = async (req, res) => {
-        try{
+        try {
             const {buffer, headers} = await incidenciasService.generarInforme();
             res.set(headers)
             res.status(200).end(buffer);
             
-        }catch(error){
+        } catch (error) {
             console.error('Error al generar informe de Incidencia:', error.message);
             return res.status(500).json({ 
                 error: 'Error interno del servidor.' 
             });
         }
-      };
+};
 
 const datosDashboard = async (req, res) => {
-        try{
+        try {
             const rows = await incidenciasService.datosDashboard();
 
             if(rows === null){
@@ -248,7 +216,7 @@ const datosDashboard = async (req, res) => {
                 dashboard: rows
             });
 
-        }catch(error){
+        } catch (error) {
             console.error('Error al obtener datos dashboard:', error.message);
             return res.status(500).json({ 
                 error: 'Error interno del servidor.' 

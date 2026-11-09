@@ -49,59 +49,14 @@
                     <table class="table">
                         <thead>
                             <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Creada el</th>
                             <th scope="col">Prioridad</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-                       <tbody>
-                            <!-- <tr>
-                                <th scope="row">91</th>
-                                <td>10/07/2026</td>
-                                <td>Alta</td>
-                                <td>Finalizada</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm" title="Finalizar" disabled>
-                                        Finalizar
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">101</th>
-                                <td>20/07/2026</td>
-                                <td>Media</td>
-                                <td>Cancelada</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm" title="Finalizar" disabled>
-                                        Finalizar
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">141</th>
-                                <td>10/08/2026</td>
-                                <td>Media</td>
-                                <td>Pendiente</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm" title="Finalizar" >
-                                        Finalizar
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">198</th>
-                                <td>25/07/2026</td>
-                                <td>Alta</td>
-                                <td>En proceso</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm" title="Finalizar" >
-                                        Finalizar
-                                    </button>
-                                </td>
-                            </tr> -->
-                        </tbody> 
+                        <tbody></tbody> 
                     </table>
                     <!-- Panel resolución -->
                         <div id="panel-resolucion" style="display:none;" class="mt-3">
@@ -128,7 +83,18 @@
             </footer> -->
         </div>
     </div>
-    <!-- <h1>Incidencias</h1> -->
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="miToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <p id="textoToast"></p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="./empleado-sistemas-incidencias.js"></script>
 </body>

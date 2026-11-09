@@ -53,10 +53,8 @@ const cancelarIncidencia = async (id_incidencia, descripcion_res) => {
         // LA INCIDENCIA EXISTE? ESTA PENDIENTE?
         const result = await incidenciasData.cancelarIncidencia(id_incidencia, descripcion_res);
         return result;
-     }
-const iniciarIncidencia = (incidencia) => {
-    return incidenciasData.iniciarIncidencia(incidencia);
-};
+}
+
 
 const generarInforme = async () => {
         const datosReporte = await incidenciasData.datosInforme();
@@ -76,4 +74,4 @@ const datosDashboard = () => {
     }
 
 export default { getAll, getById, create, update, remove, creadasPorId, asignadasAId,
-   asignarA, finalizarIncidencia, cancelarIncidencia, generarInforme, datosDashboard, iniciarIncidencia };
+   asignarA, finalizarIncidencia, cancelarIncidencia, generarInforme, datosDashboard };
