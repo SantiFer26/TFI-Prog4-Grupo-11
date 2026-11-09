@@ -11,7 +11,7 @@ const router = Router();
 // Obtener todas
 router.get("/", autorizarUsuarios([1,2,3]),incidenciasController.getAll);
 
-// Rutas relacionadas al director
+// Ruta relacionada al director
 router.get('/datos-dashboard', autorizarUsuarios([1]), incidenciasController.datosDashboard); 
 
 // Obtener una por ID
@@ -41,7 +41,7 @@ router.put("/:id_incidencia/asignar",
             .isInt().withMessage('El id del empleado debe ser un valor entero'),
         validarCampos
     ], 
-    autorizarUsuarios([1]) ,validarId, validarIncidencia, incidenciasController.asignarA);
+    autorizarUsuarios([1]), incidenciasController.asignarA);
 
 router.put('/:id_incidencia/finalizar', 
     [   
@@ -59,6 +59,8 @@ router.put('/:id_incidencia/cancelar',
         param('id_incidencia')
             .notEmpty().withMessage('La incidencia es necesaria.')
             .isInt().withMessage('La incidencia debe ser un valor entero'),
+        check('descripcion')
+            .notEmpty().withMessage('El motivo de la cancelación es necesario.'),
         validarCampos
     ], 
     autorizarUsuarios([1,3]), incidenciasController.cancelar);

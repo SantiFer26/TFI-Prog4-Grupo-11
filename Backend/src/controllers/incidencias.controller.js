@@ -9,11 +9,9 @@ const getAll = async (req, res) => {
         const { estado, prioridad } = req.query;
         const filtros = { estado, prioridad }
         let rows = [];
-        console.log(req.usuario);
         if (req.usuario.rol === 1) {
             rows = await incidenciasService.getAll(filtros);
         }
-        console.log(req.usuario);
         if (req.usuario.rol === 2) {
             rows = await incidenciasService.asignadasAId(
             req.usuario.id_usuario
@@ -119,8 +117,7 @@ const remove = async (req, res) => {
 };
 
 const asignarA = async (req, res) => {
-        try{
-                   
+        try{       
             const incidencia = { 
                 id_incidencia : req.params.id_incidencia, 
                 asignado_a: req.body.asignado_a
@@ -133,7 +130,7 @@ const asignarA = async (req, res) => {
             }
 
             return res.status(200).json({
-                mensaje: 'Incidencia asignada a empleado del área.',
+                mensaje: 'Incidencia asignada correctamente',
                 incidencia: rows
             });
             

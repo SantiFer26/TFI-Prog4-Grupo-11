@@ -66,6 +66,9 @@ async function cargarDatos(url) {
                 const descripcion = document.createElement("td");
                 descripcion.textContent = inc.descripcion_pedido;
 
+                const asignado_a = document.createElement("td");
+                asignado_a.textContent = inc.asignado_a;
+
                 const creada_el = document.createElement("td");
                 creada_el.textContent = inc.creado;
 
@@ -80,6 +83,10 @@ async function cargarDatos(url) {
                 const btnAsignar = document.createElement("button");
                 btnAsignar.classList.add("btn", "btn-info", "btn-sm", "me-3");
                 btnAsignar.textContent = "Asignar a";
+                btnAsignar.setAttribute("data-id-inc", `${inc.id_incidencia}`);
+                btnAsignar.setAttribute("data-id-asignado", `${inc.id_usuario_asignado}`)
+                btnAsignar.setAttribute("data-bs-toggle", "modal");
+                btnAsignar.setAttribute("data-bs-target", "#modalAsignarIncidencia");
 
                 const btnCancelar = document.createElement("button");
                 btnCancelar.classList.add("btn", "btn-danger", "btn-sm");
@@ -99,6 +106,7 @@ async function cargarDatos(url) {
 
                 fila.appendChild(id_incidencia);
                 fila.appendChild(descripcion);
+                fila.appendChild(asignado_a)
                 fila.appendChild(creada_el);
                 fila.appendChild(prioridad);
                 fila.appendChild(estado);
@@ -115,9 +123,9 @@ async function cargarDatos(url) {
 }
 
 
-// ===============================
-// Cancelar Incidencia
-// ===============================
+// ==========================================
+// Cancelar Incidencia con estado "Pendiente"
+// ==========================================
 const modalCancInc = document.getElementById("modalCancelarIncidencia");
 const miModalCancInc = Modal.getOrCreateInstance(modalCancInc);
 
@@ -162,6 +170,75 @@ document.getElementById("btnCancelarIncidencia").addEventListener("click", async
         }
     }
 });
+
+
+// ==========================================
+// Asignar incidencia
+// ==========================================
+if (!token) {
+    mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+}
+else {
+    let idIncAsignar = 0;
+    const modalAsignar = document.getElementById("modalAsignarIncidencia");
+    const miModalAsignar = Modal.getOrCreateInstance(modalAsignar);
+
+    modalAsignar.addEventListener("show.bs.modal", async event => {
+        const boton = event.relatedTarget;
+
+        idIncAsignar = boton.getAttribute("data-id-inc");
+        const idAsignadoActual = Number(boton.getAttribute("data-id-asignado"));
+
+        const response = await fetch('http://localhost:3000/api/v1/usuarios/empleados-sistemas', 
+                        {headers: {"Authorization": `Bearer ${token}`}});
+
+        const empleados = await response.json();
+
+        const defaultOption = document.getElementById('defaultOption');
+        document.getElementById("selectEmpleadosSistemas").replaceChildren(defaultOption); //limpiar los usuarios cargados anteriormente
+        
+        const empleadosDisponibles = empleados.filter(emp => emp.id_usuario !== idAsignadoActual);
+
+        empleadosDisponibles.forEach(emp => {
+            const option = document.createElement('option');
+            option.value = emp.id_usuario;
+            option.textContent = `${emp.id_usuario} - ${emp.nombres} ${emp.apellidos}`;
+            selectEmpleadosSistemas.appendChild(option);
+        });
+
+        document.getElementById("tituloModalAsignar").innerText =`Asignar Incidencia con ID ${idIncAsignar}`;
+    });
+
+    document.getElementById("btnAsignarIncidencia").addEventListener("click", async () => {
+        const idUsuario = document.getElementById("selectEmpleadosSistemas").value;
+
+        if (idUsuario === "") {
+            mostrarToast("Debe seleccionarse un empleado", "danger");
+            return;
+        }
+
+        try {
+            const respuesta = await fetch(`http://localhost:3000/api/v1/incidencias/${idIncAsignar}/asignar`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`},
+                body: JSON.stringify({ asignado_a: idUsuario })
+            });
+
+            if (respuesta.ok) {
+                mostrarToast("Incidencia asignada con éxito", "success");
+                miModalAsignar.hide();
+                cargarDatos(urlActual); // refresca la tabla
+            } else {
+                mostrarToast("Error al asignar la incidencia", "danger");
+            }
+
+        } catch (error) {
+            console.error("Error al asignar la incidencia:", error);
+            mostrarToast("Error inesperado al asignar la incidencia", "danger");
+        }
+    });
+}
+
 
 // ===============================
 // Cerrar Sesión
