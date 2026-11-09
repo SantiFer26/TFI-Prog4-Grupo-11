@@ -1,7 +1,8 @@
 import db from "./db.js";
 
-const getAll = async () => {
-        const sql = `SELECT i.id_incidencia, 
+const getAll = async (filtros = {}) => {
+        const { estado, prioridad } = filtros;
+        let sql = `SELECT i.id_incidencia, 
                             to_char(i.creado, 'DD-MM-YYYY HH24:MI') creado,
                             i.descripcion_pedido, 
                             i.descripcion_resolucion, 
@@ -15,15 +16,27 @@ const getAll = async () => {
                         INNER JOIN articulos a ON a.id_articulo  = i.id_articulo 
                         INNER JOIN categorias c ON c.id_categoria = a.id_categoria
                         INNER JOIN usuarios u ON u.id_usuario = i.asignado_a
-                        INNER JOIN estados e ON e.id_estado = i.id_estado`;            
+                        INNER JOIN estados e ON e.id_estado = i.id_estado`;
+        const values = [];
 
-        const {rowCount, rows} = await db.query(sql);
-
-        if (rowCount === 0) {
-            return null;
+        // Filtro por estado "pendiente", "cancelada" o "todas".
+        if (estado && estado !== "todas") {
+            values.push(estado);
+            sql += ` AND LOWER(e.descripcion) = LOWER($${values.length})`;
         }
+
+        // Filtro por prioridad: 1, 2 o 3
+        if (prioridad) {
+            values.push(prioridad);
+            sql += ` AND i.prioridad = $${values.length}`;
+        }
+
+        sql += ` ORDER BY i.id_incidencia ASC;`;            
+
+        const {rows} = await db.query(sql, values); // se pasan los valores de estado y prioridad, o solo estado
+
         return rows;
-      }
+}
 
 const asignarA = async (incidencia) => {
         
@@ -104,7 +117,7 @@ const finalizarIncidencia = async (incidencia) => {
         }
     }
 
-const cancelarIncidencia = async (id_incidencia) => {
+const cancelarIncidencia = async (id_incidencia, descripcion_res) => {
         
         const client = await db.connect();
 
@@ -112,11 +125,11 @@ const cancelarIncidencia = async (id_incidencia) => {
             await client.query('BEGIN');
             
             const sql = `UPDATE incidencias  
-                        SET id_estado = 4
-                        WHERE id_incidencia = $1
+                        SET id_estado = 4, descripcion_resolucion = $1
+                        WHERE id_incidencia = $2
                         RETURNING *;`;
 
-            const { rowCount, rows } = await client.query(sql, [id_incidencia]);
+            const { rowCount, rows } = await client.query(sql, [descripcion_res, id_incidencia]);
             if (rowCount === 0) {
                 await client.query('ROLLBACK');
                 return null;
