@@ -153,27 +153,25 @@ inputId.addEventListener("input", () => {
 // ===============================
 // ELIMINAR CATEGORÍA
 // ===============================
-if (!sessionStorage.getItem("token")) {
-    mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
-    return;
-}
-else {
-    let categoriaSeleccionada = null;
+let categoriaSeleccionada = null;
 
-    const modalEliminar = document.getElementById("modalEliminarCategoria");
-    const miModalEliminar = Modal.getOrCreateInstance(modalEliminar);
+const modalEliminar = document.getElementById("modalEliminarCategoria");
+const miModalEliminar = Modal.getOrCreateInstance(modalEliminar);
 
-    modalEliminar.addEventListener("show.bs.modal", event => {
-        const boton = event.relatedTarget;
+modalEliminar.addEventListener("show.bs.modal", event => {
 
-        categoriaSeleccionada = boton.getAttribute("data-id-cat");
-        const descripcion = boton.getAttribute("data-descripcion");
+    const boton = event.relatedTarget;
 
-        document.getElementById("textoModal").innerText =
-            `¿Seguro que deseas eliminar la categoría "${descripcion}"?`;
-    });
+    categoriaSeleccionada =
+        boton.getAttribute("data-id-cat");
 
-    document.getElementById("botonEliminar").addEventListener("click", async () => {
+    const descripcion =
+        boton.getAttribute("data-descripcion");
+
+    document.getElementById("textoModal").innerText =
+        `¿Seguro que deseas eliminar la categoría "${descripcion}"?`;
+});
+document.getElementById("botonEliminar").addEventListener("click", async () => {
         try {
             const response = await fetch(`http://localhost:3000/api/v1/categorias/${categoriaSeleccionada}`, {
                                 method: "DELETE", 
@@ -196,31 +194,34 @@ else {
             mostrarToast("Error al eliminar categoría", "danger");
         }
     });
-}
+
 
 // ===============================
 // EDITAR CATEGORÍA
 // ===============================
-if (!sessionStorage.getItem("token")) {
-    mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
-    return;
-}
-else {
-    let idCatEditar = 0;
+let idCatEditar = 0;
 
-    const modalEditar = document.getElementById("modalEditarCategoria");
-    const miModalEditar = Modal.getOrCreateInstance(modalEditar);
+const modalEditar =
+    document.getElementById("modalEditarCategoria");
 
-    modalEditar.addEventListener("show.bs.modal", event => {
-        const boton = event.relatedTarget;
+const miModalEditar =
+    Modal.getOrCreateInstance(modalEditar);
 
-        idCatEditar = boton.getAttribute("data-id-cat");
-        const descripcionActual = boton.getAttribute("data-descripcion");
+modalEditar.addEventListener("show.bs.modal", event => {
 
-        document.getElementById("inputEditarCategoria").value = descripcionActual;
-    });
+    const boton = event.relatedTarget;
 
-    document.getElementById("botonGuardarCambios").addEventListener("click", async () => {
+    idCatEditar =
+        boton.getAttribute("data-id-cat");
+
+    const descripcionActual =
+        boton.getAttribute("data-descripcion");
+
+    document.getElementById(
+        "inputEditarCategoria"
+    ).value = descripcionActual;
+});
+document.getElementById("botonGuardarCambios").addEventListener("click", async () => {
         const nuevaDescripcion = document.getElementById("inputEditarCategoria").value.trim();
 
         try {
@@ -245,26 +246,29 @@ else {
             mostrarToast("Error inesperado al actualizar", "danger");
         }
     });
-}
+
 
 
 // ===============================
 // CREAR NUEVA CATEGORÍA
 // ===============================
-if (!sessionStorage.getItem("token")) {
-    mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
-    return;
-}
-else {
-    const modalNueva = document.getElementById("modalNuevaCategoria");
-    const miModalNueva = Modal.getOrCreateInstance(modalNueva);
+const modalNueva =
+    document.getElementById("modalNuevaCategoria");
 
-    document.getElementById("btnNuevaCategoria").addEventListener("click", () => {
-        document.getElementById("inputNuevaCategoria").value = ""; // limpiar input
-        miModalNueva.show();
-    });
+const miModalNueva =
+    Modal.getOrCreateInstance(modalNueva);
 
-    document.getElementById("botonCrearCategoria").addEventListener("click", async () => {
+document.getElementById(
+    "btnNuevaCategoria"
+).addEventListener("click", () => {
+
+    document.getElementById(
+        "inputNuevaCategoria"
+    ).value = "";
+
+    miModalNueva.show();
+});
+document.getElementById("botonCrearCategoria").addEventListener("click", async () => {
         const descripcion = document.getElementById("inputNuevaCategoria").value.trim();
 
         if (descripcion === "") {
@@ -292,7 +296,7 @@ else {
             mostrarToast("Error inesperado al crear categoría", "danger");
         }
     });
-}
+
 
 // ===============================
 // Cerrar Sesión

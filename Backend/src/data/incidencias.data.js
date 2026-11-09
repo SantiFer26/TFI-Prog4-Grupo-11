@@ -104,6 +104,61 @@ const finalizarIncidencia = async (incidencia) => {
         }
     }
 
+const iniciarIncidencia = async (incidencia) => {
+
+    const client = await db.connect();
+
+    try {
+
+        await client.query('BEGIN');
+
+        const { id_incidencia } = incidencia;
+
+        const sql = `
+            UPDATE incidencias
+            SET id_estado = 2
+            WHERE id_incidencia = $1
+            RETURNING *;
+        `;
+
+        const { rowCount, rows } =
+            await client.query(sql, [id_incidencia]);
+
+        if (rowCount === 0) {
+            await client.query('ROLLBACK');
+            return null;
+        }
+
+        const sqlInsert = `
+            INSERT INTO incidencias_estados
+                (id_incidencia, id_estado)
+            VALUES ($1, 2)
+        `;
+
+        await client.query(sqlInsert, [id_incidencia]);
+
+        await client.query('COMMIT');
+
+        return rows[0];
+
+    } catch (error) {
+
+        await client.query('ROLLBACK');
+
+        console.error(
+            'Error en la transacción de inicio:',
+            error
+        );
+
+        throw error;
+
+    } finally {
+
+        client.release();
+
+    }
+};
+
 const cancelarIncidencia = async (id_incidencia) => {
         
         const client = await db.connect();
@@ -255,4 +310,5 @@ const datosDashboard = async () => {
         }
         return rows[0];
     }
-export default { getAll, creadasPorId, create, asignarA, finalizarIncidencia, cancelarIncidencia, asignadasAId, informacionIncidencia, datosInforme, datosDashboard};
+export default { getAll, creadasPorId, create, asignarA, finalizarIncidencia, cancelarIncidencia,
+     asignadasAId, informacionIncidencia, datosInforme, datosDashboard, iniciarIncidencia};
