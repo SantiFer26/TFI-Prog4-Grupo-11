@@ -41,6 +41,8 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Descripción Pedido</th>
+                                    <th>Asignado A</th>
                                     <th>Fecha Creación</th>
                                     <th>Prioridad</th>
                                     <th>Estado</th>
@@ -54,6 +56,52 @@
             </main>
             <!-- <footer>
             </footer> -->
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCancelarIncidencia" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModal"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label for="inputCancelarIncidencia" class="form-label">Motivo de cancelación:</label>
+                    <input type="text" id="inputCancelarIncidencia" class="form-control">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver atrás</button>
+                    <button type="button" id="btnCancelarIncidencia" class="btn btn-primary">Cancelar Incidencia</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAsignarIncidencia" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalAsignar"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="selectEmpleadosSistemas" class="form-label">Empleado</label>
+                        <select class="form-select" id="selectEmpleadosSistemas">
+                            <option id="defaultOption" value="" selected disabled>Seleccione un empleado...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" id="btnAsignarIncidencia" class="btn btn-primary">Asignar Incidencia</button>
+                </div>
+            </div>
         </div>
     </div>
 

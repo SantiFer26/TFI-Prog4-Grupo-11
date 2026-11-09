@@ -7,7 +7,7 @@ import authRoutes from "./v1/routes/auth.js";
 import incidenciasRoutes from "./v1/routes/incidencias.js";
 import articulosRoutes from "./v1/routes/articulos.js";
 import categoriasRoutes from "./v1/routes/categorias.js";
-//import usuariosRoutes from "./v1/routes/usuarios.js";
+import usuariosRoutes from "./v1/routes/usuarios.js";
 
 import { manejarErrores, rutaNoEncontrada, autenticar } from "./middlewares/index.js";
 
@@ -29,7 +29,7 @@ app.use("/", authRoutes)
 app.use("/api/v1/incidencias", autenticar, incidenciasRoutes);
 app.use("/api/v1/articulos", autenticar, articulosRoutes);
 app.use("/api/v1/categorias", autenticar, categoriasRoutes);
-//app.use("/api/v1/usuarios", autenticar, usuariosRoutes);
+app.use("/api/v1/usuarios", autenticar, usuariosRoutes);
 
 // Ruta no encontrada
 app.use(rutaNoEncontrada);

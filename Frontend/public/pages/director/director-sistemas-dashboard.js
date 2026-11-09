@@ -25,7 +25,7 @@ async function buscarDatosDashboard() {
         return;
     } else {    
         try {
-            const response = await fetch(`http://localhost:3000/api/v1/incidencias/datos-dashboard`, 
+            const response = await fetch("http://localhost:3000/api/v1/incidencias/datos-dashboard", 
                             {headers: {Authorization: `Bearer ${token}`}});
 
             if (!response.ok) {
@@ -34,16 +34,17 @@ async function buscarDatosDashboard() {
             }
 
             const data = await response.json();
+            console.log("Datos recibidos del servidor:", data);
 
             const valorPendientes = document.getElementById('total_pendientes');
             const valorPrioritarias = document.getElementById('total_prioritarias');
             const valorCanceladas = document.getElementById('total_canceladas');
             const valorTotales = document.getElementById('incidencias_totales');
     
-            valorPendientes.textContent = data.total_pendientes;
-            valorPrioritarias.textContent = data.total_prioritarias;
-            valorCanceladas.textContent = data.total_canceladas;
-            valorTotales.textContent = data.total_canceladas;
+            valorPendientes.textContent = data.dashboard.total_pendientes;
+            valorPrioritarias.textContent = data.dashboard.total_prioritarias;
+            valorCanceladas.textContent = data.dashboard.total_canceladas;
+            valorTotales.textContent = data.dashboard.incidencias_totales;
 
         } catch (error) {
             console.log(error);

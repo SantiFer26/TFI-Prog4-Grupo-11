@@ -1,29 +1,44 @@
 import db from "./db.js";
 
-const getAll = async () => {
-        const sql = `SELECT i.id_incidencia, 
+const getAll = async (filtros = {}) => {
+        const { estado, prioridad } = filtros;
+        let sql = `SELECT i.id_incidencia, 
                             to_char(i.creado, 'DD-MM-YYYY HH24:MI') creado,
                             i.descripcion_pedido, 
                             i.descripcion_resolucion, 
                             i.prioridad,
                             a.descripcion articulo_descripcion, 
                             c.descripcion cateoria, 
-                            concat(u.apellidos, ' ', u.nombres) asignado_a, 
+                            i.asignado_a AS id_usuario_asignado,
+                            concat(u.apellidos, ', ', u.nombres) asignado_a, 
                             e.descripcion estado,
                             e.id_estado
                         FROM incidencias i 
                         INNER JOIN articulos a ON a.id_articulo  = i.id_articulo 
                         INNER JOIN categorias c ON c.id_categoria = a.id_categoria
                         INNER JOIN usuarios u ON u.id_usuario = i.asignado_a
-                        INNER JOIN estados e ON e.id_estado = i.id_estado`;            
+                        INNER JOIN estados e ON e.id_estado = i.id_estado
+                    WHERE 1=1`;
+        const values = [];
 
-        const {rowCount, rows} = await db.query(sql);
-
-        if (rowCount === 0) {
-            return null;
+        // Filtro por estado "pendiente", "cancelada" o "todas".
+        if (estado && estado !== "todas") {
+            values.push(estado);
+            sql += ` AND LOWER(e.descripcion) = LOWER($${values.length})`;
         }
+
+        // Filtro por prioridad: 1, 2 o 3
+        if (prioridad) {
+            values.push(prioridad);
+            sql += ` AND i.prioridad = $${values.length}`;
+        }
+
+        sql += ` ORDER BY i.id_incidencia ASC;`;            
+
+        const {rows} = await db.query(sql, values); // se pasan los valores de estado y prioridad, o solo estado
+
         return rows;
-      }
+}
 
 const asignarA = async (incidencia) => {
         
@@ -35,7 +50,6 @@ const asignarA = async (incidencia) => {
             // ACTUALIZO LA INCIDENCIA
             const {id_incidencia, asignado_a} = incidencia;
 
-            // SE PODRÍA MEJORAR Y RECIBIR EL ESTADO
             const sql = `UPDATE incidencias  
                         SET asignado_a = $1, id_estado = 2
                         WHERE id_incidencia = $2
@@ -47,7 +61,7 @@ const asignarA = async (incidencia) => {
                 return null;
             }    
 
-            // NUEVO REGISTRO PARA EL HISTORIAL DE incidencias_estados
+            // Al cambiar de estado a "En Proceso", se agrega registro en incidencias_estados
             const sql_insert = `INSERT INTO incidencias_estados (id_incidencia, id_estado)
                                 VALUES ($1, 2)`;
             await client.query(sql_insert, [id_incidencia]);                                
@@ -56,11 +70,11 @@ const asignarA = async (incidencia) => {
 
             return rows;
 
-        }catch (error){
+        } catch (error) {
             await client.query('ROLLBACK');
-            console.error('Error en latransacción de asignación: ', error);
+            console.error('Error en la transacción de asignación: ', error);
             throw error; 
-        }finally{
+        } finally {
             client.release();
         }
     }
@@ -159,7 +173,7 @@ const iniciarIncidencia = async (incidencia) => {
     }
 };
 
-const cancelarIncidencia = async (id_incidencia) => {
+const cancelarIncidencia = async (id_incidencia, descripcion_res) => {
         
         const client = await db.connect();
 
@@ -167,11 +181,11 @@ const cancelarIncidencia = async (id_incidencia) => {
             await client.query('BEGIN');
             
             const sql = `UPDATE incidencias  
-                        SET id_estado = 4
-                        WHERE id_incidencia = $1
+                        SET id_estado = 4, descripcion_resolucion = $1
+                        WHERE id_incidencia = $2
                         RETURNING *;`;
 
-            const { rowCount, rows } = await client.query(sql, [id_incidencia]);
+            const { rowCount, rows } = await client.query(sql, [descripcion_res, id_incidencia]);
             if (rowCount === 0) {
                 await client.query('ROLLBACK');
                 return null;

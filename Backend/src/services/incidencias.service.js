@@ -2,8 +2,8 @@ import incidenciasData from "../data/incidencias.data.js";
 import notificacionesService from "./notificaciones.service.js"
 import reportesService from "./reportes.service.js";
 
-const getAll = () => {
-  return incidenciasData.getAll();
+const getAll = (filtros) => {
+  return incidenciasData.getAll(filtros);
 };
 
 const getById = (id) => {
@@ -48,11 +48,10 @@ const finalizarIncidencia = async (incidencia) => {
         return result;
     }
   
-const cancelarIncidencia = async (id_incidencia) => {
+const cancelarIncidencia = async (id_incidencia, descripcion_res) => {
         // CONTROLES??
         // LA INCIDENCIA EXISTE? ESTA PENDIENTE?
-        // CREAR UN REGISTRO EN INCIDENCIAS_ESTADO        
-        const result = await incidenciasData.cancelarIncidencia(id_incidencia);
+        const result = await incidenciasData.cancelarIncidencia(id_incidencia, descripcion_res);
         return result;
      }
 const iniciarIncidencia = (incidencia) => {
