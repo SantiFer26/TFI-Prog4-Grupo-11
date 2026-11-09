@@ -12,16 +12,27 @@ async function cargarIncidencias() {
             const incidencias = await response.json();
             console.log(incidencias);
             const tbody = document.querySelector("tbody");
-            tbody.innerHTML = "";
+            //tbody.innerHTML = "";
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
 
             incidencias.forEach(inc => {
-
+                 console.log(
+                "id:",
+                inc.id_incidencia,
+                "estado:",
+                inc.id_estado,
+                "tipo:",
+                typeof inc.id_estado
+            );
                 // Traducir estado
                 let estadoTexto = "";
                 switch (inc.id_estado) {
                     case 1: estadoTexto = "Pendiente"; break;
                     case 2: estadoTexto = "En proceso"; break;
                     case 3: estadoTexto = "Finalizada"; break;
+                    case 4: estadoTexto = "Cancelada"; break;
                     default: estadoTexto = "Desconocido";
                 }
 
@@ -39,13 +50,62 @@ async function cargarIncidencias() {
                 const estado_incidencia = document.createElement("td");
                 estado_incidencia.textContent = estadoTexto;
 
-                const acciones = document.createElement("td");
+                /*const acciones = document.createElement("td");
                 const botonCancelar = document.createElement("button");
 
                 botonCancelar.classList.add("btn", "btn-danger", "btn-sm");
                 botonCancelar.textContent = "Cancelar";
 
-                acciones.appendChild(botonCancelar);
+                acciones.appendChild(botonCancelar);*/
+                //Boton cancelar incidencia en estado pendiente
+                const acciones = document.createElement("td");
+
+                if (inc.id_estado === 1) {
+                   
+                    const botonCancelar = document.createElement("button");
+
+                    botonCancelar.classList.add(
+                        "btn",
+                        "btn-danger",
+                        "btn-sm"
+                    );
+
+                    botonCancelar.textContent = "Cancelar";
+                    
+                    console.log("Creando botón para incidencia", inc.id_incidencia);
+
+                    botonCancelar.addEventListener("click", async () => {
+                         try {
+
+                            const response = await fetch(
+                                `http://localhost:3000/api/v1/incidencias/${inc.id_incidencia}/cancelar`,
+                                {
+                                    method: "PUT",
+                                    headers: {
+                                        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                                    }
+                                }
+                            );
+
+                            if (response.ok) {
+                                alert("La incidencia fue cancelada correctamente");
+
+                                setTimeout(() => {
+                                    cargarIncidencias();
+                                }, 500);
+                            }
+
+                        } catch (error) {
+                            console.error(error);
+                        }
+                        console.log("Cancelar incidencia:", inc.id_incidencia);
+
+                     
+                    });
+
+                    acciones.appendChild(botonCancelar);  
+
+                }
 
                 fila.appendChild(id_incidencia);
                 fila.appendChild(creada_el);

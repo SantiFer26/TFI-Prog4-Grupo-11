@@ -43,8 +43,8 @@ const finalizarIncidencia = async (incidencia) => {
             return null; 
         };
 
-        const datosCorreo = await incidenciasData.informacionIncidencia(incidencia);
-        await notificacionesService.enviarCorreo(datosCorreo);
+        //const datosCorreo = await incidenciasData.informacionIncidencia(incidencia);
+        //await notificacionesService.enviarCorreo(datosCorreo);
         return result;
     }
   
@@ -55,6 +55,9 @@ const cancelarIncidencia = async (id_incidencia) => {
         const result = await incidenciasData.cancelarIncidencia(id_incidencia);
         return result;
      }
+const iniciarIncidencia = (incidencia) => {
+    return incidenciasData.iniciarIncidencia(incidencia);
+};
 
 const generarInforme = async () => {
         const datosReporte = await incidenciasData.datosInforme();
@@ -73,4 +76,5 @@ const datosDashboard = () => {
         return incidenciasData.datosDashboard();
     }
 
-export default { getAll, getById, create, update, remove, creadasPorId, asignadasAId, asignarA, finalizarIncidencia, cancelarIncidencia, generarInforme, datosDashboard };
+export default { getAll, getById, create, update, remove, creadasPorId, asignadasAId,
+   asignarA, finalizarIncidencia, cancelarIncidencia, generarInforme, datosDashboard, iniciarIncidencia };

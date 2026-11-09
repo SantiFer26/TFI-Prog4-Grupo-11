@@ -60,11 +60,22 @@ router.put('/:id_incidencia/cancelar',
     ], 
     autorizarUsuarios([1,3]), incidenciasController.canclar);
 
+router.put('/:id_incidencia/iniciar',
+    [
+        param('id_incidencia')
+            .notEmpty().withMessage('La incidencia es necesaria.')
+            .isInt().withMessage('La incidencia debe ser un valor entero'),
+        validarCampos
+    ],
+    autorizarUsuarios([2]),
+    incidenciasController.iniciarIncidencia
+);
+
 router.get('/informe', autorizarUsuarios([1]), incidenciasController.generarInforme);   
 
 router.get('/datos-dashboard', autorizarUsuarios([1]), incidenciasController.datosDashboard);   
 
-// Eliminar incidencia definitivamente
+// Eliminar incidencia 
 router.delete("/:id", validarId, incidenciasController.remove);
 
 export default router;
