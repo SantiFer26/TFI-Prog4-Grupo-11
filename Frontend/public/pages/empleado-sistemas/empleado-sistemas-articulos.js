@@ -149,26 +149,25 @@ inputId.addEventListener("input", () => {
 // ===============================
 // EDITAR ARTÍCULO
 // ===============================
-if (!sessionStorage.getItem("token")) {
-    mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
-    return;
-}
-else {
-    const modalEditar = document.getElementById("modalEditarArticulo");
-    const miModalEditar = Modal.getOrCreateInstance(modalEditar);
+const modalEditar = document.getElementById("modalEditarArticulo");
+const miModalEditar = Modal.getOrCreateInstance(modalEditar);
 
-    let idArtEditar = 0;
+let idArtEditar = 0;
 
-    modalEditar.addEventListener("show.bs.modal", event => {
-        const boton = event.relatedTarget;
+modalEditar.addEventListener("show.bs.modal", event => {
 
-        idArtEditar = boton.getAttribute("data-id-art");
-        const descripcionActual = boton.getAttribute("data-descripcion");
+    const boton = event.relatedTarget;
 
-        document.getElementById("inputEditarArticulo").value = descripcionActual;
-    });
+    idArtEditar = boton.getAttribute("data-id-art");
 
-    document.getElementById("botonGuardarCambios").addEventListener("click", async () => {
+    const descripcionActual =
+        boton.getAttribute("data-descripcion");
+
+    document.getElementById("inputEditarArticulo").value =
+        descripcionActual;
+
+});
+document.getElementById("botonGuardarCambios").addEventListener("click", async () => {
         const nuevaDescripcion = document.getElementById("inputEditarArticulo").value.trim();
 
         try {
@@ -193,16 +192,12 @@ else {
             mostrarToast("Error inesperado al actualizar", "danger");
         }
     });
-}
+
 
 // ===============================
 // CREAR NUEVO ARTÍCULO
 // ===============================
-if (!sessionStorage.getItem("token")) {
-    mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
-    return;
-}
-else {
+
     const modalNuevo = document.getElementById("modalNuevoArticulo");
     const miModalNuevo = Modal.getOrCreateInstance(modalNuevo);
 
@@ -256,16 +251,12 @@ else {
             mostrarToast("Error inesperado al crear artículo", "danger");
         }
     });
-}
+
 
 // ===============================
 // ELIMINAR ARTÍCULO
 // ===============================
-if (!sessionStorage.getItem("token")) {
-    mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
-    return;
-}
-else {
+ 
     const modalEliminar = document.getElementById("modalEliminarArticulo");
     const miModalEliminar = Modal.getOrCreateInstance(modalEliminar);
 
@@ -304,7 +295,7 @@ else {
             mostrarToast("Error al eliminar artículo", "danger");
         }
     });
-}
+
 
 // ===============================
 // Cerrar Sesión

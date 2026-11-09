@@ -192,6 +192,36 @@ const cancelar = async (req, res) => {
         }
     };
 
+const iniciarIncidencia = async (req, res) => {
+    try {
+
+        const incidencia = {
+            id_incidencia: req.params.id_incidencia
+        };
+
+        const rows = await incidenciasService.iniciarIncidencia(incidencia);
+
+        if (rows === null) {
+            return res.status(404).json({
+                mensaje: 'Incidencia no encontrada.'
+            });
+        }
+
+        return res.status(200).json({
+            mensaje: 'Incidencia iniciada.',
+            incidencia: rows
+        });
+
+    } catch (error) {
+
+        console.error('Error al iniciar incidencia:', error.message);
+
+        return res.status(500).json({
+            error: 'Error interno del servidor.'
+        });
+    }
+};
+
 const generarInforme = async (req, res) => {
         try{
             const {buffer, headers} = await incidenciasService.generarInforme();
