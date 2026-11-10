@@ -54,7 +54,7 @@ async function cargarIncidencias() {
                 id_incidencia.textContent = inc.id_incidencia;
 
                 const creada_el = document.createElement("td");
-                creada_el.textContent = new Date(inc.creado).toLocaleDateString();
+                creada_el.textContent = inc.creado ? inc.creado.split(' ')[0] : '';
 
                 const prioridad = document.createElement("td");
                 prioridad.textContent = inc.prioridad;
@@ -115,9 +115,9 @@ cerrarSesion.addEventListener("click", () => {
     sessionStorage.removeItem("token");
 });
 
-// ===============================
-// TOAST
-// ===============================
+// ===================================
+// TOAST y PANEL RESOLUCION INCIDENCIA
+// ===================================
 const toast = document.getElementById("miToast");
 const panelResolucion = document.getElementById("panel-resolucion");
 const inputResolucion = document.getElementById("input-resolucion");
@@ -145,7 +145,7 @@ btnGuardarResolucion.addEventListener("click", async () => {
     const resolucion = inputResolucion.value.trim();
 
     if (!resolucion) {
-        alert("Debe ingresar una resolución");
+        mostrarToast("Debe ingresar una resolución", "danger");
         return;
     }
 
@@ -167,7 +167,7 @@ btnGuardarResolucion.addEventListener("click", async () => {
 
         if (response.ok) {
 
-            alert("Incidencia finalizada");
+            mostrarToast("Incidencia finalizada con éxito", "success");
 
             panelResolucion.style.display = "none";
 

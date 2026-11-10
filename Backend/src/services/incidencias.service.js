@@ -43,11 +43,11 @@ const finalizarIncidencia = async (incidencia) => {
             return null; 
         };
 
-        /*const datosCorreo = await incidenciasData.informacionIncidencia(incidencia);
+        const datosCorreo = await incidenciasData.informacionIncidencia(incidencia);
 
         await notificacionesService.enviarCorreo(datosCorreo);
 
-        console.log("CORREO ENVIADO");*/
+        console.log("CORREO DE FINALIZACIÓN ENVIADO");
 
         return result;
     }
@@ -56,6 +56,17 @@ const cancelarIncidencia = async (id_incidencia, descripcion_res) => {
         // CONTROLES??
         // LA INCIDENCIA EXISTE? ESTA PENDIENTE?
         const result = await incidenciasData.cancelarIncidencia(id_incidencia, descripcion_res);
+
+        if (!result) { 
+            return null; 
+        };
+
+        const datosCorreo = await incidenciasData.informacionIncidencia({id_incidencia});
+
+        await notificacionesService.enviarCorreo(datosCorreo);
+
+        console.log("CORREO DE CANCELACIÓN ENVIADO");
+
         return result;
 }
 
