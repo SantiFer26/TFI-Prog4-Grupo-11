@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Incidencia Finalizada</title>
+  <title>{{ titulo }}</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -24,7 +24,7 @@
     }
     header h1 {
       margin: 0;
-      color: #03912e;
+      color: {{ colorTitulo }};
     }
     ul {
       list-style-type: "📌 ";
@@ -48,18 +48,18 @@
 <body>
   <div class="container">
     <header>
-      <h1>Incidencia Finalizada</h1>
+      <h1>{{ titulo }}</h1>
     </header>
 
-    <h2>La incidencia que creaste ha sido finalizada</h2>
+    <h2>{{ subtitulo }}</h2>
     <ul>
       <li><strong>Creada:</strong> {{ creada }}</li>
-      <li><strong>Finalizada:</strong> {{ finalizada }}</li>
-      <li><strong>Resolución:</strong> {{ resolucion }}</li>
+      <li><strong>{{ etiquetaFecha }}:</strong> {{ finalizada }}</li>
+      <li><strong>{{ etiquetaDetalle }}:</strong> {{ resolucion }}</li>
     </ul>
 
     <footer>
-      &copy; 2026 - Progracimación IV - Gestión de Incidencias
+      &copy; 2026 - Programación IV - Sistema de Gestión de Incidencias
     </footer>
   </div>
 </body>
