@@ -9,7 +9,7 @@ async function cargarIncidencias() {
     else {
         try {
             const response = await fetch("http://localhost:3000/api/v1/incidencias", 
-                            {headers: {"Authorization": `Bearer ${token}`}});
+                            {headers: {"Authorization": `Bearer ${token}`},cache: "no-store"});
             console.log(response.status);        
             
             const incidencias = await response.json();
@@ -26,10 +26,11 @@ async function cargarIncidencias() {
             }
 
             //filtramos para que se muestren las incidencias, menos las que están en estado "pendiente"
-            const estadosPermitidos = ["en proceso", "resuelta", "cancelada"];
-            const incidenciasFiltradas = incidencias.filter(inc => 
+            //const estadosPermitidos = ["en proceso", "resuelta", "cancelada"];
+
+            const incidenciasFiltradas = incidencias/*.filter(inc => 
                 inc.estado && estadosPermitidos.includes(inc.estado.toLowerCase().trim())
-            );
+            );*/
 
             if (incidenciasFiltradas.length === 0) {
                 mostrarToast("No tenés incidencias asignadas", "danger");
@@ -62,6 +63,13 @@ async function cargarIncidencias() {
                 estado_incidencia.textContent = estadoTexto;
 
                 const acciones = document.createElement("td");
+
+                console.log(
+                    "Incidencia:",
+                    inc.id_incidencia,
+                    "Estado:",
+                    inc.id_estado
+                );
                 
                 if (inc.id_estado === 2) {
                     const botonFinalizar = document.createElement("button");
