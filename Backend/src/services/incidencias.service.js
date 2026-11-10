@@ -36,15 +36,19 @@ const asignarA = (incidencia) => {
 }
 
 const finalizarIncidencia = async (incidencia) => {
-     
+
         const result = await incidenciasData.finalizarIncidencia(incidencia);
 
         if (!result) { 
             return null; 
         };
 
-        //const datosCorreo = await incidenciasData.informacionIncidencia(incidencia);
-        //await notificacionesService.enviarCorreo(datosCorreo);
+        /*const datosCorreo = await incidenciasData.informacionIncidencia(incidencia);
+
+        await notificacionesService.enviarCorreo(datosCorreo);
+
+        console.log("CORREO ENVIADO");*/
+
         return result;
     }
   

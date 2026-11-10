@@ -14,6 +14,10 @@ router.get("/", autorizarUsuarios([1,2,3]),incidenciasController.getAll);
 // Ruta relacionada al director
 router.get('/datos-dashboard', autorizarUsuarios([1]), incidenciasController.datosDashboard); 
 
+// Ruta informe
+
+router.get('/informe', autorizarUsuarios([1]), incidenciasController.generarInforme);    
+
 // Obtener una por ID
 router.get("/:id", validarId, autorizarUsuarios([2,3]), incidenciasController.creadasPorId);
 
@@ -65,7 +69,7 @@ router.put('/:id_incidencia/cancelar',
     ], 
     autorizarUsuarios([1,3]), incidenciasController.cancelar); 
 
-router.get('/informe', autorizarUsuarios([1]), incidenciasController.generarInforme);     
+ 
 
 // Eliminar incidencia 
 router.delete("/:id", validarId, incidenciasController.remove);

@@ -194,10 +194,13 @@ else {
 
         const empleados = await response.json();
 
+        console.log("Empleados recibidos:", empleados);
+        console.log("Asignado actual:", idAsignadoActual);
+
         const defaultOption = document.getElementById('defaultOption');
         document.getElementById("selectEmpleadosSistemas").replaceChildren(defaultOption); //limpiar los usuarios cargados anteriormente
         
-        const empleadosDisponibles = empleados.filter(emp => emp.id_usuario !== idAsignadoActual);
+        const empleadosDisponibles = empleados;//.filter(emp => emp.id_usuario !== idAsignadoActual);
 
         empleadosDisponibles.forEach(emp => {
             const option = document.createElement('option');
@@ -238,7 +241,60 @@ else {
         }
     });
 }
+// ===============================
+// Boton realizar PDF
+// ===============================
+const btnReportePDF = document.getElementById("btn-reporte-pdf");
+btnReportePDF.addEventListener("click", descargarPDF);
 
+async function descargarPDF() {
+    try {
+
+        const response = await fetch(
+            "http://localhost:3000/api/v1/incidencias/informe",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        if (!response.ok) {
+            mostrarToast(
+                "Error al generar el informe",
+                "danger"
+            );
+            return;
+        }
+
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "informe-incidencias.pdf";
+
+        document.body.appendChild(a);
+        a.click();
+
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        mostrarToast(
+            "Informe descargado correctamente",
+            "success"
+        );
+
+    } catch (error) {
+        console.error(error);
+
+        mostrarToast(
+            "Error al descargar el PDF",
+            "danger"
+        );
+    }
+}
 
 // ===============================
 // Cerrar Sesión

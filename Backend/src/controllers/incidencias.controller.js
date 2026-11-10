@@ -142,12 +142,13 @@ const asignarA = async (req, res) => {
 };
 
 const finalizarIncidencia = async (req, res) => {
+
         try {                 
             const incidencia = { 
                 id_incidencia : req.params.id_incidencia, 
                 resolucion: req.body.resolucion
             }
-        
+            
             const rows = await incidenciasService.finalizarIncidencia(incidencia);
 
             if(rows === null){

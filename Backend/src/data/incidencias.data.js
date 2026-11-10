@@ -218,11 +218,12 @@ const create = async (incidencia) => {
     }
   
 const informacionIncidencia = async (incidencia) => {
+     console.log("ENTRE A informacionIncidencia");
         
         const {id_incidencia } = incidencia;
 
         const sql = `SELECT to_char(i.creado, 'DD-MM-YYYY HH24:MI') creada, 
-                            to_char(e.fecha_hora_estado, 'DD-MM-YYYY HH24:MI') finalizada, 
+                            e.fecha_hora_estado::text finalizada, 
                             i.descripcion_resolucion resolucion, 
                             u.usuario destinatario
                         FROM incidencias i 
