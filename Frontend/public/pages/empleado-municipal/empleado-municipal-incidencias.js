@@ -1,13 +1,17 @@
+const Modal = window.bootstrap.Modal;
+
+const token = sessionStorage.getItem("token");
+
 console.log("SE CARGO EL JS DE INCIDENCIAS");
 async function cargarIncidencias() {
-    if (!sessionStorage.getItem("token")) {
+    if (!token) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
         return;
     }
     else {
         try {
             const response = await fetch("http://localhost:3000/api/v1/incidencias", 
-                            {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
+                            {headers: {"Authorization": `Bearer ${token}`}});
             console.log(response.status);                
             const incidencias = await response.json();
             console.log(incidencias);
@@ -17,15 +21,13 @@ async function cargarIncidencias() {
                 tbody.removeChild(tbody.firstChild);
             }
 
+            const PRIORIDADES = { 1: "Alta", 2: "Media", 3: "Baja" };
+
             incidencias.forEach(inc => {
-                 console.log(
-                "id:",
-                inc.id_incidencia,
-                "estado:",
-                inc.id_estado,
-                "tipo:",
-                typeof inc.id_estado
-            );
+                console.log("id:", inc.id_incidencia,
+                            "estado:", inc.id_estado,
+                            "tipo:", typeof inc.id_estado);
+
                 // Traducir estado
                 let estadoTexto = "";
                 switch (inc.id_estado) {
@@ -42,69 +44,28 @@ async function cargarIncidencias() {
                 id_incidencia.textContent = inc.id_incidencia;
 
                 const creada_el = document.createElement("td");
-                creada_el.textContent = new Date(inc.creado).toLocaleDateString();
+                creada_el.textContent = inc.creado ? inc.creado.split(' ')[0] : '';
 
                 const prioridad = document.createElement("td");
-                prioridad.textContent = inc.prioridad;
+                prioridad.textContent = PRIORIDADES[inc.prioridad];
 
                 const estado_incidencia = document.createElement("td");
                 estado_incidencia.textContent = estadoTexto;
 
-                /*const acciones = document.createElement("td");
-                const botonCancelar = document.createElement("button");
-
-                botonCancelar.classList.add("btn", "btn-danger", "btn-sm");
-                botonCancelar.textContent = "Cancelar";
-
-                acciones.appendChild(botonCancelar);*/
-                //Boton cancelar incidencia en estado pendiente
                 const acciones = document.createElement("td");
-
+                
+                //Boton cancelar incidencia en estado pendiente
                 if (inc.id_estado === 1) {
-                   
-                    const botonCancelar = document.createElement("button");
+                    const btnCancelar = document.createElement("button");
+                
+                    btnCancelar.classList.add("btn", "btn-danger", "btn-sm");
+                    btnCancelar.textContent = "Cancelar";
 
-                    botonCancelar.classList.add(
-                        "btn",
-                        "btn-danger",
-                        "btn-sm"
-                    );
-
-                    botonCancelar.textContent = "Cancelar";
+                    btnCancelar.setAttribute("data-id-inc", `${inc.id_incidencia}`);
+                    btnCancelar.setAttribute("data-bs-toggle", "modal");
+                    btnCancelar.setAttribute("data-bs-target", "#modalCancelarIncidencia");
                     
-                    console.log("Creando botón para incidencia", inc.id_incidencia);
-
-                    botonCancelar.addEventListener("click", async () => {
-                         try {
-
-                            const response = await fetch(
-                                `http://localhost:3000/api/v1/incidencias/${inc.id_incidencia}/cancelar`,
-                                {
-                                    method: "PUT",
-                                    headers: {
-                                        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-                                    }
-                                }
-                            );
-
-                            if (response.ok) {
-                                alert("La incidencia fue cancelada correctamente");
-
-                                setTimeout(() => {
-                                    cargarIncidencias();
-                                }, 500);
-                            }
-
-                        } catch (error) {
-                            console.error(error);
-                        }
-                        console.log("Cancelar incidencia:", inc.id_incidencia);
-
-                     
-                    });
-
-                    acciones.appendChild(botonCancelar);  
-
+                    acciones.appendChild(btnCancelar);
                 }
 
                 fila.appendChild(id_incidencia);
@@ -114,7 +75,7 @@ async function cargarIncidencias() {
                 fila.appendChild(acciones);
 
                 tbody.appendChild(fila);
-            });
+            })
 
         } catch (error) {
             console.error("Error cargando incidencias:", error);
@@ -123,6 +84,56 @@ async function cargarIncidencias() {
 }
 
 cargarIncidencias();
+
+
+// ==========================================
+// Cancelar Incidencia con estado "Pendiente"
+// ==========================================
+const modalCancInc = document.getElementById("modalCancelarIncidencia");
+const miModalCancInc = Modal.getOrCreateInstance(modalCancInc);
+
+let idIncCancelar = 0;
+
+modalCancInc.addEventListener("show.bs.modal", event => {
+    const boton = event.relatedTarget;
+
+    idIncCancelar = boton.getAttribute("data-id-inc");
+
+    document.getElementById("tituloModal").innerText =`Cancelar Incidencia con ID ${idIncCancelar}`;
+});
+
+document.getElementById("btnCancelarIncidencia").addEventListener("click", async () => {
+    if (!token) {
+        mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
+        return;
+    }
+    else {
+        try {
+            const motivo = document.getElementById("inputCancelarIncidencia").value.trim();
+            const response = await fetch(`http://localhost:3000/api/v1/incidencias/${idIncCancelar}/cancelar`, {
+                method: "PUT", 
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}, 
+                body: JSON.stringify({ descripcion_res: motivo })
+            });
+
+            miModalCancInc.hide();
+
+            if (response.ok) {
+                mostrarToast("Incidencia cancelada con éxito.", "success");
+                cargarIncidencias();
+            } 
+            else {
+                const data = await response.json();
+                mostrarToast(data.error || "Error al cancelar la incidencia", "danger");
+            }
+
+        } catch (error) {
+            console.error(error);
+            mostrarToast("Error al cancelar la incidencia", "danger");
+        }
+    }
+});
+
 
 // ===============================
 // Cerrar Sesión

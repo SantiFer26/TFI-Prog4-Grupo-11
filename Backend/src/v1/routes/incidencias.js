@@ -59,24 +59,11 @@ router.put('/:id_incidencia/cancelar',
         param('id_incidencia')
             .notEmpty().withMessage('La incidencia es necesaria.')
             .isInt().withMessage('La incidencia debe ser un valor entero'),
-        check('descripcion')
+        check('descripcion_res')
             .notEmpty().withMessage('El motivo de la cancelación es necesario.'),
         validarCampos
     ], 
-    autorizarUsuarios([1,3]), incidenciasController.cancelar);
-
-router.put('/:id_incidencia/iniciar',
-    [
-        param('id_incidencia')
-            .notEmpty().withMessage('La incidencia es necesaria.')
-            .isInt().withMessage('La incidencia debe ser un valor entero'),
-        validarCampos
-    ],
-    autorizarUsuarios([2]),
-    incidenciasController.iniciarIncidencia
-);
-
-router.get('/informe', autorizarUsuarios([1]), incidenciasController.generarInforme);   
+    autorizarUsuarios([1,3]), incidenciasController.cancelar); 
 
 router.get('/informe', autorizarUsuarios([1]), incidenciasController.generarInforme);     
 

@@ -2,14 +2,16 @@ const Toast = window.bootstrap.Toast;
 const toast = document.getElementById("miToast");
 const miToast = Toast.getOrCreateInstance(toast);
 
+const token = sessionStorage.getItem("token");
+
 async function cargarArticulos() {
-    if (!sessionStorage.getItem("token")) {
+    if (!token) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
         return;
     } else {
         try {
             const response = await fetch("http://localhost:3000/api/v1/articulos", 
-                            {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
+                            {headers: {"Authorization": `Bearer ${token}`}});
 
             const articulos = await response.json();
 
@@ -52,14 +54,14 @@ async function cargarArticulos() {
 cargarArticulos();
         
 async function buscarArticulo(idBuscado) {
-    if (!sessionStorage.getItem("token")) {
+    if (!token) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
         return;
     }
     else {
         try {
             const response = await fetch(`http://localhost:3000/api/v1/articulos/${idBuscado}`, 
-                            {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
+                            {headers: {"Authorization": `Bearer ${token}`}});
                 
             const art = await response.json();
         

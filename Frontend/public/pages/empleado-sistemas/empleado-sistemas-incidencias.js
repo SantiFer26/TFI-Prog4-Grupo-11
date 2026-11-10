@@ -1,13 +1,15 @@
+const token = sessionStorage.getItem("token");
+
 console.log("SE CARGO EL JS DE INCIDENCIAS");
 async function cargarIncidencias() {
-    if (!sessionStorage.getItem("token")) {
+    if (!token) {
         mostrarToast("Necesitas iniciar sesión para acceder al recurso.", "danger");
         return;
     }
     else {
         try {
             const response = await fetch("http://localhost:3000/api/v1/incidencias", 
-                            {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
+                            {headers: {"Authorization": `Bearer ${token}`}});
             console.log(response.status);        
             
             const incidencias = await response.json();
@@ -23,7 +25,17 @@ async function cargarIncidencias() {
                 tbody.removeChild(tbody.firstChild);
             }
 
-            incidencias.forEach(inc => {
+            //filtramos para que se muestren las incidencias, menos las que están en estado "pendiente"
+            const estadosPermitidos = ["en proceso", "resuelta", "cancelada"];
+            const incidenciasFiltradas = incidencias.filter(inc => 
+                inc.estado && estadosPermitidos.includes(inc.estado.toLowerCase().trim())
+            );
+
+            if (incidenciasFiltradas.length === 0) {
+                mostrarToast("No tenés incidencias asignadas", "danger");
+                return;
+            }
+            incidenciasFiltradas.forEach(inc => {
                 console.log(inc);
                 // Traducir estado
                 let estadoTexto = "";
@@ -49,80 +61,26 @@ async function cargarIncidencias() {
                 const estado_incidencia = document.createElement("td");
                 estado_incidencia.textContent = estadoTexto;
 
-                /*const acciones = document.createElement("td");
-                const botonCancelar = document.createElement("button");
-
-                botonCancelar.classList.add("btn", "btn-danger", "btn-sm");
-                botonCancelar.textContent = "Cancelar";
-
-                acciones.appendChild(botonCancelar);*/
-                //Boton cancelar incidencia en estado pendiente
                 const acciones = document.createElement("td");
+                
+                if (inc.id_estado === 2) {
+                    const botonFinalizar = document.createElement("button");
 
+                    botonFinalizar.classList.add(
+                        "btn",
+                        "btn-success",
+                        "btn-sm"
+                    );
 
-                        if (inc.id_estado === 1) {
-
-                            const botonComenzar = document.createElement("button");
-
-                            botonComenzar.classList.add(
-                                "btn",
-                                "btn-warning",
-                                "btn-sm"
-                            );
-
-                            botonComenzar.textContent = "Comenzar";
-
-                            botonComenzar.addEventListener("click", async () => {
-                                console.log("Iniciando incidencia", inc.id_incidencia);
-                                    try {
-
-                                        const response = await fetch(
-                                            `http://localhost:3000/api/v1/incidencias/${inc.id_incidencia}/iniciar`,
-                                            {
-                                                method: "PUT",
-                                                headers: {
-                                                    "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-                                                }
-                                            }
-                                        );
-
-                                        if (response.ok) {
-                                            alert("Incidencia iniciada correctamente");
-                                            cargarIncidencias();
-                                        }
-
-                                    } catch (error) {
-                                        console.error(error);
-                                    }
-
-                                });
-
-                            acciones.appendChild(botonComenzar);
-                        }
-
-                        else if (inc.id_estado === 2) {
-
-                            const botonFinalizar = document.createElement("button");
-
-                            botonFinalizar.classList.add(
-                                "btn",
-                                "btn-success",
-                                "btn-sm"
-                            );
-
-                            botonFinalizar.textContent = "Finalizar";
-
-                            
-                            botonFinalizar.addEventListener("click", () => {
-
-                                idIncidenciaSeleccionada = inc.id_incidencia;
-
-                                panelResolucion.style.display = "block";
-
-                            });
+                    botonFinalizar.textContent = "Finalizar";
+                    
+                    botonFinalizar.addEventListener("click", () => {
+                        idIncidenciaSeleccionada = inc.id_incidencia;
+                        panelResolucion.style.display = "block";
+                    });
     
-                            acciones.appendChild(botonFinalizar);
-                        }
+                    acciones.appendChild(botonFinalizar);
+                }
 
                 fila.appendChild(id_incidencia);
                 fila.appendChild(creada_el);
@@ -131,7 +89,7 @@ async function cargarIncidencias() {
                 fila.appendChild(acciones);
 
                 tbody.appendChild(fila);
-            });
+            })
 
         } catch (error) {
             console.error("Error cargando incidencias:", error);
@@ -191,7 +149,7 @@ btnGuardarResolucion.addEventListener("click", async () => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     resolucion
