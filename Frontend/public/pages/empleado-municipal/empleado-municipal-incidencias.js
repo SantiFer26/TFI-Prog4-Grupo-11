@@ -12,7 +12,13 @@ async function cargarIncidencias() {
         try {
             const response = await fetch("http://localhost:3000/api/v1/incidencias", 
                             {headers: {"Authorization": `Bearer ${token}`}});
-            console.log(response.status);                
+            console.log(response.status);
+            
+            if (!response.ok) {
+                mostrarToast("Hubo un error al cargar las incidencias", "danger");
+                return;
+            }
+
             const incidencias = await response.json();
             console.log(incidencias);
             const tbody = document.querySelector("tbody");

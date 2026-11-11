@@ -12,6 +12,9 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   try {
     const articulo = await articulosService.getById(req.params.id);
+    if (!articulo) {
+      return res.status(404).json({ error: "Artículo no encontrado" });
+    }
     res.status(200).json(articulo);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener artículo" });
@@ -37,7 +40,7 @@ const update = async (req, res) => {
     if (resultado.rowCount === 1) {
       res.status(200).json({ mensaje: "Artículo actualizado con éxito." });
     } else {
-      res.status(404).json({ mensaje: "El artículo no existe." });
+      res.status(404).json({ mensaje: "El artículo no se encontró o no existe" });
     }
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar artículo" });
@@ -50,7 +53,7 @@ const remove = async (req, res) => {
     const resultado = await articulosService.remove(id_articulo);
 
     if (resultado.rowCount === 1) {
-      res.status(204).json({ mensaje: "Artículo eliminado con éxito." });
+      res.status(204).send();
     } else {
       res.status(404).json({ mensaje: "El recurso no existe o ya fue eliminado." });
     }

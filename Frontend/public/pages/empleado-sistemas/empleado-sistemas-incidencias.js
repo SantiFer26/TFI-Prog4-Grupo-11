@@ -10,7 +10,12 @@ async function cargarIncidencias() {
         try {
             const response = await fetch("http://localhost:3000/api/v1/incidencias", 
                             {headers: {"Authorization": `Bearer ${token}`},cache: "no-store"});
-            console.log(response.status);        
+            console.log(response.status);
+
+            if (!response.ok) {
+                mostrarToast("Hubo un error al cargar las incidencias", "danger");
+                return;
+            }
             
             const incidencias = await response.json();
 
@@ -25,12 +30,7 @@ async function cargarIncidencias() {
                 tbody.removeChild(tbody.firstChild);
             }
 
-            //filtramos para que se muestren las incidencias, menos las que están en estado "pendiente"
-            //const estadosPermitidos = ["en proceso", "resuelta", "cancelada"];
-
-            const incidenciasFiltradas = incidencias/*.filter(inc => 
-                inc.estado && estadosPermitidos.includes(inc.estado.toLowerCase().trim())
-            );*/
+            const incidenciasFiltradas = incidencias
 
             if (incidenciasFiltradas.length === 0) {
                 mostrarToast("No tenés incidencias asignadas", "danger");
@@ -174,6 +174,8 @@ btnGuardarResolucion.addEventListener("click", async () => {
             inputResolucion.value = "";
 
             cargarIncidencias();
+        } else {
+            mostrarToast("Error al finalizar la incidencia", "danger");
         }
 
     } catch (error) {

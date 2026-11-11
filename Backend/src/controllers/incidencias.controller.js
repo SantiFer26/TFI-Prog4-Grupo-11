@@ -175,7 +175,7 @@ const cancelar = async (req, res) => {
             const rows = await incidenciasService.cancelarIncidencia(id_incidencia, descripcion_res);
 
             if(rows === null){
-                return res.status(200).json({mensaje: 'Incidencia no cancelada.'});
+                return res.status(404).json({mensaje: 'Incidencia no cancelada.'});
             }
 
             return res.status(200).json({
@@ -210,7 +210,7 @@ const datosDashboard = async (req, res) => {
             const rows = await incidenciasService.datosDashboard();
 
             if(rows === null){
-                return res.status(200).json({mensaje: 'Sin datos para el dashboard.'});
+                return res.status(404).json({mensaje: 'Sin datos para el dashboard.'});
             }
 
             res.status(200).json({

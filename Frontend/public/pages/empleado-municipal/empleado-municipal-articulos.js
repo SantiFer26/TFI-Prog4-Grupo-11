@@ -13,6 +13,11 @@ async function cargarArticulos() {
             const response = await fetch("http://localhost:3000/api/v1/articulos", 
                             {headers: {"Authorization": `Bearer ${token}`}});
 
+            if (!response.ok) {
+                mostrarToast("Hubo un error al cargar los artículos", "danger");
+                return;
+            }
+            
             const articulos = await response.json();
 
             const tbody = document.querySelector("tbody");
@@ -62,7 +67,12 @@ async function buscarArticulo(idBuscado) {
         try {
             const response = await fetch(`http://localhost:3000/api/v1/articulos/${idBuscado}`, 
                             {headers: {"Authorization": `Bearer ${token}`}});
-                
+            
+            if (!response.ok) {
+                mostrarToast("Artículo no encontrado", "danger");
+                return;
+            }
+
             const art = await response.json();
         
             const tbody = document.querySelector("tbody");

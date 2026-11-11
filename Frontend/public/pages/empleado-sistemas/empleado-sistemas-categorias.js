@@ -15,6 +15,11 @@ async function cargarCategorias() {
             const response = await fetch("http://localhost:3000/api/v1/categorias", 
                             {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
 
+            if (!response.ok) {
+                mostrarToast("Hubo un error al cargar las categorías", "danger");
+                return;
+            }
+
             const categorias = await response.json();
 
             tabla.innerHTML = "";
@@ -78,6 +83,11 @@ async function buscarCategoria(idBuscado) {
         try {
             const response = await fetch(`http://localhost:3000/api/v1/categorias/${idBuscado}`, 
                             {headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}});
+
+            if (!response.ok) {
+                mostrarToast("Categoría no encontrada", "danger");
+                return;
+            }
                 
             const cat = await response.json();
         
@@ -122,7 +132,7 @@ async function buscarCategoria(idBuscado) {
         
         } catch (error) {
             console.error("Error al cargar la categoria:", error);
-            mostrarToast("Categoría no encontrada", "danger")
+            mostrarToast("Error de conexión con el servidor", "danger")
         }
     }
 }
@@ -178,14 +188,13 @@ document.getElementById("botonEliminar").addEventListener("click", async () => {
                                 headers: {"Authorization": `Bearer ${sessionStorage.getItem("token")}`}
             });
 
-            miModalEliminar.hide();
-
-            const data = await response.json(); // ← IMPORTANTE
+            miModalEliminar.hide(); 
 
             if (response.ok) {
                 mostrarToast("Categoría eliminada con éxito", "success");
                 cargarCategorias();
             } else {
+                const data = await response.json();
                 mostrarToast(data.error || "Error al eliminar categoría", "danger");
             }
 
@@ -280,7 +289,7 @@ document.getElementById("botonCrearCategoria").addEventListener("click", async (
             const respuesta = await fetch("http://localhost:3000/api/v1/categorias", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Authorization": `Bearer ${sessionStorage.getItem("token")}` },
-                body: JSON.stringify({ descripcion })
+                body: JSON.stringify({ descripcion: descripcion })
             });
 
             if (respuesta.ok) {
