@@ -204,32 +204,59 @@ const asignadasAId = async (asignado_a) => {
 const create = async (incidencia) => {
         const { id_articulo, creado_por, descripcion_pedido, prioridad } = incidencia;    
 
-        const sql = `INSERT INTO incidencias 
-                    (id_articulo, id_estado, creado_por, asignado_a, descripcion_pedido, prioridad) 
-                    VALUES ($1, 1, $2, 1, $3, $4)
-                    RETURNING *;`;
+        const client = await db.connect();
+
+        try{
+            await client.query('BEGIN');
+
+            const sql = `INSERT INTO incidencias 
+                        (id_articulo, id_estado, creado_por, asignado_a, descripcion_pedido, prioridad) 
+                        VALUES ($1, 1, $2, 1, $3, $4)
+                        RETURNING *;`;
                     
-        const result = await db.query(sql, [id_articulo, creado_por, descripcion_pedido, prioridad]); 
+            const {rowCount, rows} = await client.query(sql, [id_articulo, creado_por, descripcion_pedido, prioridad]); 
         
-        if (result.rowCount === 0) {
-            return null;
+            if (rowCount === 0) {
+                await client.query('ROLLBACK');
+                return null;
+            }  
+
+            const nuevaIncidencia = rows[0];
+
+            const sql_insert = `INSERT INTO incidencias_estados (id_incidencia, id_estado)
+                                VALUES ($1, 1)`;
+            await client.query(sql_insert, [nuevaIncidencia.id_incidencia]);                                
+            
+            await client.query('COMMIT');
+
+            return nuevaIncidencia;
+
+        } catch (error) {
+            await client.query('ROLLBACK');
+            console.error('Error en la transacción de creación: ', error);
+            throw error; 
+        } finally {
+            client.release();
         }
-        return result.rows[0];
-    }
-  
+    
+}
+
 const informacionIncidencia = async (incidencia) => {
      console.log("ENTRE A informacionIncidencia");
         
         const {id_incidencia } = incidencia;
 
         const sql = `SELECT to_char(i.creado, 'DD-MM-YYYY HH24:MI') creada, 
-                            e.fecha_hora_estado::text finalizada, 
+                            to_char(CURRENT_DATE + e.fecha_hora_estado, 'DD-MM-YYYY HH24:MI') finalizada,
                             i.descripcion_resolucion resolucion, 
-                            u.usuario destinatario
+                            u.usuario destinatario, 
+                            es.descripcion descripcion_estado
                         FROM incidencias i 
                         INNER JOIN usuarios u ON u.id_usuario = i.creado_por
                         INNER JOIN incidencias_estados e ON e.id_incidencia = i.id_incidencia 
-                        WHERE i.id_incidencia = $1 and e.id_estado = 3;`;
+                                    AND e.id_estado = i.id_estado
+                        INNER JOIN estados es ON es.id_estado = i.id_estado
+                        WHERE i.id_incidencia = $1;`;
 
         
         const {rowCount, rows} = await db.query(sql, [id_incidencia]);
