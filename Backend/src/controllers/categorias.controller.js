@@ -13,6 +13,9 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   try {
     const categoria = await categoriasService.getById(req.params.id);
+    if (!categoria) {
+      return res.status(404).json({ error: "Categoria no encontrada" });
+    }
     res.status(200).json(categoria);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener categoria" });
@@ -43,7 +46,7 @@ const softDelete = async (req, res) => {
     const resultado = await categoriasService.softDelete(id_categoria);
 
     if (resultado.rowCount === 1) {
-      res.status(200).json({ mensaje: "Categoría eliminada con éxito." });
+      res.status(204).send();
     } else {
       res.status(404).json({ mensaje: "El recurso no existe o ya fue eliminado." });
     }
