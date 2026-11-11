@@ -36,40 +36,40 @@ const router = Router();
 /**
  * @swagger
  * /v1/articulos:
- *  get:
- *      summary: Obtiene una lista de todos los articulos activos
- *      security:
- *          - BearerAuth: []
- *      tags: [articulos]
- *      responses:
- *          200:
- *           description: Se obtuvo con éxito la lista de artículos
- *           content:
- *            application/json:
+ *   get:
+ *     summary: Obtiene una lista de todos los articulos activos
+ *     security:
+ *       - BearerAuth: []
+ *     tags: [articulos]
+ *     responses:
+ *       200:
+ *         description: Se obtuvo con éxito la lista de artículos
+ *         content:
+ *           application/json:
  *             schema: 
- *              type: array
- *              items:
- *               $ref: '#/components/schemas/articulo'
- *         403:
- *           description: El rol del usuario no tiene permisos para este recurso
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   mensaje:
- *                     type: string
- *                     example: "Acceso Denegado"
- *          500:
- *           description: Hubo un error en el servidor al consultar los artículos
- *           content:
- *             application/json:
- *              schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/articulo'
+ *       403:
+ *         description: El rol del usuario no tiene permisos para este recurso
+ *         content:
+ *           application/json:
+ *             schema:
  *               type: object
  *               properties:
- *                error:
- *                 type: string
- *                 example: "Error al obtener artículos"
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Acceso Denegado"
+ *       500:
+ *         description: Hubo un error en el servidor al consultar los artículos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Error al obtener artículos"
  */
 router.get("/", autorizarUsuarios([2,3]), articulosController.getAll);
 
