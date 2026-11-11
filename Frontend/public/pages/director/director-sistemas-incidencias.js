@@ -250,14 +250,28 @@ btnReportePDF.addEventListener("click", descargarPDF);
 async function descargarPDF() {
     try {
 
-        const response = await fetch(
-            "http://localhost:3000/api/v1/incidencias/informe",
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+        let urlPDF =
+            "http://localhost:3000/api/v1/incidencias/informe";
+
+        const filtros = [];
+
+        if (estado) {
+            filtros.push(`estado=${estado}`);
+        }
+
+        if (prioridad) {
+            filtros.push(`prioridad=${prioridad}`);
+        }
+
+        if (filtros.length > 0) {
+            urlPDF += "?" + filtros.join("&");
+        }
+
+        const response = await fetch(urlPDF, {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
-        );
+        });
 
         if (!response.ok) {
             mostrarToast(
@@ -285,7 +299,7 @@ async function descargarPDF() {
             "Informe descargado correctamente",
             "success"
         );
-
+        
     } catch (error) {
         console.error(error);
 

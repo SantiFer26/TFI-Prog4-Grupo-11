@@ -68,7 +68,7 @@ nav ul li a:hover{
     padding: 0.5rem 2rem;
 
     color: white;
-    background-color: #8cc856;
+    background-color: #5b9723;
 
     text-decoration: none;
 }
@@ -81,7 +81,7 @@ main{
 }
 
 div.main-container{
-    background: linear-gradient(0deg, white, green);
+    background: linear-gradient(0deg, white, #8dc44f);
     justify-content: flex-start;
     align-items: stretch; 
     min-height: calc(100vh - 92px);

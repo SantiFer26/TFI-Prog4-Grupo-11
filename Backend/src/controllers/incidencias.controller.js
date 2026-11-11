@@ -193,7 +193,9 @@ const cancelar = async (req, res) => {
 
 const generarInforme = async (req, res) => {
         try {
-            const {buffer, headers} = await incidenciasService.generarInforme();
+            const { estado, prioridad } = req.query;
+
+            const {buffer, headers} = await incidenciasService.generarInforme(estado, prioridad);
             res.set(headers)
             res.status(200).end(buffer);
             
