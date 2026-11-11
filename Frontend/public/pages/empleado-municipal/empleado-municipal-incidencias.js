@@ -52,6 +52,9 @@ async function cargarIncidencias() {
                 const estado_incidencia = document.createElement("td");
                 estado_incidencia.textContent = estadoTexto;
 
+                const articulo = document.createElement("td");
+                articulo.textContent = inc.articulo_descripcion;
+
                 const acciones = document.createElement("td");
                 
                 //Boton cancelar incidencia en estado pendiente
@@ -69,6 +72,7 @@ async function cargarIncidencias() {
                 }
 
                 fila.appendChild(id_incidencia);
+                fila.appendChild(articulo)
                 fila.appendChild(creada_el);
                 fila.appendChild(prioridad);
                 fila.appendChild(estado_incidencia);

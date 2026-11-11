@@ -62,6 +62,12 @@ async function cargarIncidencias() {
                 const estado_incidencia = document.createElement("td");
                 estado_incidencia.textContent = estadoTexto;
 
+                const descripcion = document.createElement("td");
+                descripcion.textContent = inc.descripcion_pedido;
+
+                const articulo = document.createElement("td");
+                articulo.textContent = inc.articulo_descripcion;
+
                 const acciones = document.createElement("td");
 
                 console.log(
@@ -91,6 +97,8 @@ async function cargarIncidencias() {
                 }
 
                 fila.appendChild(id_incidencia);
+                fila.appendChild(articulo);
+                fila.appendChild(descripcion);
                 fila.appendChild(creada_el);
                 fila.appendChild(prioridad);
                 fila.appendChild(estado_incidencia);

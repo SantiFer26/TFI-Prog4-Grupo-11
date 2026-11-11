@@ -33,7 +33,7 @@ const getAll = async (filtros = {}) => {
             sql += ` AND i.prioridad = $${values.length}`;
         }
 
-        sql += ` ORDER BY i.id_incidencia ASC;`;            
+        sql += ` ORDER BY i.id_incidencia DESC;`;            
 
         const {rows} = await db.query(sql, values); // se pasan los valores de estado y prioridad, o solo estado
 
@@ -170,7 +170,7 @@ const creadasPorId = async (creado_por) => {
                         INNER JOIN usuarios u ON u.id_usuario = i.asignado_a 
                         INNER JOIN estados e ON e.id_estado = i.id_estado 
                         WHERE i.creado_por = $1
-                        ORDER BY i.id_incidencia ASC;`;            
+                        ORDER BY i.id_incidencia DESC;`;            
 
         const {rowCount, rows} = await db.query(sql, [creado_por]);
 
@@ -190,7 +190,9 @@ const asignadasAId = async (asignado_a) => {
                         INNER JOIN categorias c ON c.id_categoria = a.id_categoria
                         INNER JOIN usuarios u ON u.id_usuario = i.asignado_a 
                         INNER JOIN estados e ON e.id_estado = i.id_estado 
-                        WHERE i.asignado_a = $1`;                                    
+                        WHERE i.asignado_a = $1
+                        ORDER BY i.id_incidencia DESC`
+                        ;                                    
 
         const {rowCount, rows} = await db.query(sql, [asignado_a]);
 
@@ -278,7 +280,8 @@ const datosInforme = async () => {
                         INNER JOIN articulos a ON a.id_articulo  = i.id_articulo 
                         INNER JOIN usuarios u ON u.id_usuario = i.asignado_a
                         INNER JOIN estados e ON e.id_estado = i.id_estado
-                        ORDER BY i.id_incidencia DESC`;            
+                        ORDER BY i.id_incidencia DESC`;
+                                    
 
         const {rowCount, rows} = await db.query(sql);
 
@@ -288,6 +291,75 @@ const datosInforme = async () => {
         return rows;
     }
 
+    const datosInformePendientes = async () => {
+
+    const sql = `SELECT i.id_incidencia,
+                        to_char(i.creado, 'DD-MM-YYYY HH24:MI') creada,
+                        a.descripcion articulo,
+                        concat(u.apellidos, ' ', u.nombres) asignada_a,
+                        e.descripcion estado
+                    FROM incidencias i
+                    INNER JOIN articulos a ON a.id_articulo = i.id_articulo
+                    INNER JOIN usuarios u ON u.id_usuario = i.asignado_a
+                    INNER JOIN estados e ON e.id_estado = i.id_estado
+                    WHERE i.id_estado = 1
+                    ORDER BY i.id_incidencia DESC`;
+
+    const { rowCount, rows } = await db.query(sql);
+
+    if (rowCount === 0) {
+        return null;
+    }
+
+    return rows;
+};
+
+const datosInformePrioritarias = async () => {
+
+    const sql = `SELECT i.id_incidencia,
+                        to_char(i.creado, 'DD-MM-YYYY HH24:MI') creada,
+                        a.descripcion articulo,
+                        concat(u.apellidos, ' ', u.nombres) asignada_a,
+                        e.descripcion estado
+                    FROM incidencias i
+                    INNER JOIN articulos a ON a.id_articulo = i.id_articulo
+                    INNER JOIN usuarios u ON u.id_usuario = i.asignado_a
+                    INNER JOIN estados e ON e.id_estado = i.id_estado
+                    WHERE i.id_estado = 1
+                    AND i.prioridad = 1
+                    ORDER BY i.id_incidencia DESC`;
+
+    const { rowCount, rows } = await db.query(sql);
+
+    if (rowCount === 0) {
+        return null;
+    }
+
+    return rows;
+};
+
+const datosInformeCanceladas = async () => {
+
+    const sql = `SELECT i.id_incidencia,
+                        to_char(i.creado, 'DD-MM-YYYY HH24:MI') creada,
+                        a.descripcion articulo,
+                        concat(u.apellidos, ' ', u.nombres) asignada_a,
+                        e.descripcion estado
+                    FROM incidencias i
+                    INNER JOIN articulos a ON a.id_articulo = i.id_articulo
+                    INNER JOIN usuarios u ON u.id_usuario = i.asignado_a
+                    INNER JOIN estados e ON e.id_estado = i.id_estado
+                    WHERE i.id_estado = 4
+                    ORDER BY i.id_incidencia DESC`;
+
+    const { rowCount, rows } = await db.query(sql);
+
+    if (rowCount === 0) {
+        return null;
+    }
+
+    return rows;
+};
 const datosDashboard = async () => {
         const sql = `SELECT * FROM sp_obtener_metricas();`;            
 
@@ -299,4 +371,4 @@ const datosDashboard = async () => {
         return rows[0];
     }
 export default { getAll, creadasPorId, create, asignarA, finalizarIncidencia, cancelarIncidencia,
-     asignadasAId, informacionIncidencia, datosInforme, datosDashboard };
+     asignadasAId, informacionIncidencia, datosInforme, datosDashboard, datosInformeCanceladas, datosInformePendientes, datosInformePrioritarias };
